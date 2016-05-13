@@ -53,7 +53,8 @@ function LoadContext()
     var gameScreen = new GameScreen(canvas.width, canvas.height);
 }
 
-$().ready()
+$(document).ready(function()
 {
+    console.log("hello");
     LoadContext();
-}
+});
