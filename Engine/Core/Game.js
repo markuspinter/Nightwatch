@@ -13,6 +13,7 @@ class Game
         this.drawBufferIndex = 0;
 
         this.running = true;
+        this.ascending = false;
 
         this.xOffset = 0;
         this.yOffset = 0;
@@ -23,19 +24,39 @@ class Game
         let bufferInfo = this.drawBuffer;
         let buffer = bufferInfo.Data;
 
+        let bufferWidth = bufferInfo.Width;
+        let bufferHeight = bufferInfo.Height;
+
         for (let pixel = 0; pixel < buffer.length; pixel+=4)
         {
 
-            buffer[pixel]     = 0;
-            buffer[pixel + 1] = 123;
-            buffer[pixel + 2] = 123;
+            buffer[pixel]     = this.yOffset;
+            buffer[pixel + 1] = this.xOffset/2;
+            buffer[pixel + 2] = this.yOffset/2;
             buffer[pixel + 3] = 255;
 
-
+        }
+        if (this.xOffset >= 249)
+        {
+            this.ascending = false;
+        }
+        else if (this.xOffset <= 5)
+        {
+            this.ascending = true;
         }
 
-        this.xOffset++;
-        this.yOffset++;
+        if (this.ascending)
+        {
+            this.xOffset = (this.xOffset+7) % 255;
+            this.yOffset = (this.yOffset+7) % 255;
+        }
+        else
+        {
+            this.xOffset = (this.xOffset-7) % 255;
+            this.yOffset = (this.yOffset-7) % 255;
+        }
+
+        GameDebug.LogInfo(this, this.xOffset);
     }
 
     SwapBuffers()

@@ -26,6 +26,13 @@ function gameStep()
         let fps = 1000/deltaTime;
         lastMilliseconds = currentMilliseconds;
 
+        abstractionLayer.ctx.font = "20px SanSerif";
+        abstractionLayer.ctx.fillStyle = "white";
+        abstractionLayer.ctx.fillText("Elapsed: " + deltaTime.toFixed(2),
+            100, 100);
+        abstractionLayer.ctx.fillText("FPS:     " + fps.toFixed(0),
+            100, 130);
+
         //console.clear();
         //GameDebug.LogInfo(this, "Elapsed: " +
         //   deltaTime + "\n\tFps: " + fps);
