@@ -13,8 +13,6 @@ function gameStep()
 
         var game = abstractionLayer.game;
 
-        abstractionLayer.ctx.clearRect(0, 0,
-            abstractionLayer.canvas.width, abstractionLayer.canvas.height);
         game.UpdateAndRender();
         game.SwapBuffers();
         abstractionLayer.ctx.putImageData(game.GetScreenBuffer(), 0, 0);

@@ -4,10 +4,16 @@
 
 function N_typeof(object)
 {
-    return object.constructor.name;
+    if (typeof(object) != "undefined")
+    {
+        return object.constructor.name;
+    }
 }
 
 function N_nameof(object)
 {
-    return object.constructor.name;
+    if (typeof(object) != "undefined")
+    {
+        return object.constructor.name;
+    }
 }

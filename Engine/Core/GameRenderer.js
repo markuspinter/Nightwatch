@@ -17,16 +17,25 @@ class GameRenderer
         if (N_typeof(data) == "Uint8ClampedArray")
         {
 
-            for (let y = 0; y < height; y++)
+            let buffer = this.drawBuffer.data;
+
+            let xStart = xOffset*4;
+            let absWidth = (xOffset+width)*4;
+            let absHeight = yOffset+height;
+            let bufferWidth = this.drawBuffer.Width*4;
+
+            for (let y = yOffset; y < absHeight ; y++)
             {
-                for (let x = 0; x < width; x+=4)
+                let row = (y*(bufferWidth));
+                let dataRow = ((y-yOffset)*(width));
+                for (let x = xStart; x < absWidth; x+=4)
                 {
-                    let pixelInDrawBuffer = ((x+xOffset)*4)*(y+yOffset);
-                    let pixelInData = (x*4)*y;
-                    this.drawBuffer[pixelInDrawBuffer] = data[pixelInData];
-                    this.drawBuffer[pixelInDrawBuffer+1] = data[pixelInData+1];
-                    this.drawBuffer[pixelInDrawBuffer+2] = data[pixelInData+2];
-                    this.drawBuffer[pixelInDrawBuffer+3] = data[pixelInData+3];
+                    let pixelInDrawBuffer = x+row;
+                    let pixelInData = (x-xStart)+dataRow;
+                    buffer[pixelInDrawBuffer] = data[pixelInData];
+                    buffer[pixelInDrawBuffer+1] = data[pixelInData+1];
+                    buffer[pixelInDrawBuffer+2] = data[pixelInData+2];
+                    buffer[pixelInDrawBuffer+3] = data[pixelInData+3];
                 }
             }
         }
@@ -47,17 +56,17 @@ class GameRenderer
 
             let buffer = this.drawBuffer.data;
 
+            let xStart = xOffset*4;
             let absWidth = (xOffset+width)*4;
             let absHeight = yOffset+height;
-            let widthDiff = this.drawBuffer.Width*4 - absWidth;
-            let heightDiff = this.drawBuffer.Height - absHeight;
             let bufferWidth = this.drawBuffer.Width*4;
 
             for (let y = yOffset; y < absHeight ; y++)
             {
-                for (let x = xOffset; x < absWidth; x+=4)
+                let row = (y*(bufferWidth));
+                for (let x = xStart; x < absWidth; x+=4)
                 {
-                    let pixelInDrawBuffer = x+(y*(bufferWidth));
+                    let pixelInDrawBuffer = x+row;
                     buffer[pixelInDrawBuffer] = r;
                     buffer[pixelInDrawBuffer+1] = g;
                     buffer[pixelInDrawBuffer+2] = b;

@@ -34,10 +34,15 @@ class Game
 
         }*/
 
-        //this.renderer.RenderColor(0,0,
-        //   this.screen.Width, this.screen.Height, data);
-        this.renderer.RenderColor(200, 200,
-            600, 400, data);
+
+
+        this.renderer.RenderColor(0,0,
+           this.screen.Width, this.screen.Height, data);
+        //this.renderer.RenderColor(200, 200,
+         //   600, 400, data);
+
+        //this.renderer.RenderColor(1200, 400,
+        //    600, 400, data);
 
 
         if (this.xOffset >= 249)
