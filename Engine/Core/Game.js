@@ -11,18 +11,21 @@ class Game
         this.renderer = new GameRenderer(gameBuffers);
 
         this.running = true;
-        this.ascending = false;
+        this.redAscending = false;
+        this.greenAscending = false;
+        this.blueAscending = false;
 
-        this.xOffset = 0;
-        this.yOffset = 0;
+        this.redOffset = 0;
+        this.greenOffset = 123;
+        this.blueOffset = 254;
     }
     
     UpdateAndRender()
     {
         let data = new Uint8ClampedArray(4);
-        data[0] = this.xOffset;
-        data[1] = 0;
-        data[2] = 0;
+        data[0] = this.redOffset;
+        data[1] = this.greenOffset;
+        data[2] = this.blueOffset;
         data[3] = 255;
         /*for (let pixel = 0; pixel < buffer.length; pixel+=4)
         {
@@ -34,8 +37,6 @@ class Game
 
         }*/
 
-
-
         this.renderer.RenderColor(0,0,
            this.screen.Width, this.screen.Height, data);
         //this.renderer.RenderColor(200, 200,
@@ -45,24 +46,58 @@ class Game
         //    600, 400, data);
 
 
-        if (this.xOffset >= 249)
+        if (this.redOffset >= 249)
         {
-            this.ascending = false;
+            this.redAscending = false;
         }
-        else if (this.xOffset <= 5)
+        else if (this.redOffset <= 5)
         {
-            this.ascending = true;
+            this.redAscending = true;
         }
 
-        if (this.ascending)
+        if (this.redAscending)
         {
-            this.xOffset = (this.xOffset+7) % 255;
-            this.yOffset = (this.yOffset+7) % 255;
+            this.redOffset = (this.redOffset+3) % 255;
         }
         else
         {
-            this.xOffset = (this.xOffset-7) % 255;
-            this.yOffset = (this.yOffset-7) % 255;
+            this.redOffset = (this.redOffset-3) % 255;
+        }
+
+        if (this.greenOffset >= 249)
+        {
+            this.greenAscending = false;
+        }
+        else if (this.greenOffset <= 5)
+        {
+            this.greenAscending = true;
+        }
+
+        if (this.greenAscending)
+        {
+            this.greenOffset = (this.greenOffset+3) % 255;
+        }
+        else
+        {
+            this.greenOffset = (this.greenOffset-3) % 255;
+        }
+
+        if (this.blueOffset >= 249)
+        {
+            this.blueAscending = false;
+        }
+        else if (this.blueOffset <= 5)
+        {
+            this.blueAscending = true;
+        }
+
+        if (this.blueAscending)
+        {
+            this.blueOffset = (this.blueOffset+3) % 255;
+        }
+        else
+        {
+            this.blueOffset = (this.blueOffset-3) % 255;
         }
 
     }

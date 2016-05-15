@@ -13,10 +13,13 @@ function gameStep()
 
         var game = abstractionLayer.game;
 
-        game.UpdateAndRender();
-        game.SwapBuffers();
-        abstractionLayer.ctx.putImageData(game.GetScreenBuffer(), 0, 0);
+        if ($("#render")[0].checked)
+        {
+            game.UpdateAndRender();
+            game.SwapBuffers();
 
+        }
+        abstractionLayer.ctx.putImageData(game.GetScreenBuffer(), 0, 0);
         //--- Test ---
 
         let currentMilliseconds = new Date();
@@ -24,7 +27,7 @@ function gameStep()
         let fps = 1000/deltaTime;
         lastMilliseconds = currentMilliseconds;
 
-        abstractionLayer.ctx.font = "20px SanSerif";
+        abstractionLayer.ctx.font = "18px sans-serif";
         abstractionLayer.ctx.fillStyle = "white";
         abstractionLayer.ctx.fillText("Elapsed: " + deltaTime.toFixed(2),
             100, 100);
@@ -73,10 +76,7 @@ class AbstractionLayer
                 gameScreen.Height);
         }
         this.game = new Game(gameBuffers, gameScreen);
-
-
-
-
+            
         //this.drawBuffer = this.gameBuffers[0];
 
         //this.DrawBufferTest();
