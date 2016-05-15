@@ -50,6 +50,7 @@ $(document).ready(function()
 
         if (scriptLoadSuccessful)
         {
+            console.log("Scripts loaded successfully, starting engine...");
             var abstrLayer = new AbstractionLayer();
             abstrLayer.LoadContext();
             
@@ -57,7 +58,7 @@ $(document).ready(function()
         else
         {
             setTimeout(main, 30);
-            console.log("Couldn't load all required scripts");
+            console.log("Waiting for scripts being loaded...");
         }
 
 
@@ -67,6 +68,7 @@ $(document).ready(function()
     LoadScript("Engine/Tools.js", OnLoaded);
     LoadScript("Engine/Core/Common.js", OnLoaded);
     LoadScript("Engine/Core/Game.js", OnLoaded);
+    LoadScript("Engine/Core/GameRenderer.js", OnLoaded);
     LoadScript("Engine/AbstractionLayer.js", function ()
     {
         OnLoaded();

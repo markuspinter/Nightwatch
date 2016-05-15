@@ -4,6 +4,7 @@
 
 var abstractionLayer;
 var lastMilliseconds = new Date();
+var buffersUsed = 2;
 function gameStep()
 {
     if (abstractionLayer.game.running)
@@ -12,12 +13,11 @@ function gameStep()
 
         var game = abstractionLayer.game;
 
-        GameDebug.StartTimer("Game Loop");
-
-
+        abstractionLayer.ctx.clearRect(0, 0,
+            abstractionLayer.canvas.width, abstractionLayer.canvas.height);
         game.UpdateAndRender();
         game.SwapBuffers();
-        abstractionLayer.ctx.putImageData((game.screenBuffer.Info), 0, 0);
+        abstractionLayer.ctx.putImageData(game.GetScreenBuffer(), 0, 0);
 
         //--- Test ---
 
@@ -35,7 +35,7 @@ function gameStep()
 
         //console.clear();
         //GameDebug.LogInfo(this, "Elapsed: " +
-        //   deltaTime + "\n\tFps: " + fps);
+        //   deltaTime + "\n\tFps: " + fps.toFixed(0));
 
     }
 
@@ -60,15 +60,17 @@ class AbstractionLayer
 
         var gameScreen = new GameScreen(canvas.width, canvas.height);
 
-        var gameBuffers = new Array(2);
+        var gameBuffers = new Array(buffersUsed);
 
-        var imageData = ctx.getImageData(0,0,gameScreen.Width,gameScreen.Height);
+        var bufferData = this.CreateBufferData(gameScreen.Width, gameScreen.Height);
 
-        gameBuffers[0] = new GameBuffer(imageData, gameScreen.Width, gameScreen.Height);
+        gameBuffers[0] = new GameBuffer(
+            new ImageData(bufferData, gameScreen.Width, gameScreen.Height),
+            gameScreen.Width, gameScreen.Height);
         for (let i = 1; i < gameBuffers.length; i++)
         {
             gameBuffers[i] = new GameBuffer(
-                new ImageData(gameScreen.Width, gameScreen.Height),
+                new ImageData(bufferData, gameScreen.Width, gameScreen.Height),
                 gameScreen.Width,
                 gameScreen.Height);
         }
@@ -87,16 +89,46 @@ class AbstractionLayer
         gameStep();
     }
 
+    CreateBufferData(width, height)
+    {
+        var buffer = new Uint8ClampedArray(width*height*4);
+        for (let i = 0; i < buffer.length; i+=4)
+        {
+            buffer[i] = 0;
+            buffer[i+1] = 0;
+            buffer[i+2] = 0;
+            buffer[i+3] = 255;
+        }
+        return buffer;
+    }
+
     CloseRequested()
     {
-        abstractionLayer.game.CloseRequested();
+        abstractionLayer.game.Shutdown();
     }
 
     Resize()
     {
-        abstractionLayer.canvas.width = window.innerWidth;
-        abstractionLayer.canvas.height = window.innerHeight;
-        abstractionLayer.game.ResizeGame(window.innerWidth, window.innerHeight);
+        let newWidth = window.innerWidth;
+        let newHeight = window.innerHeight;
+
+        abstractionLayer.canvas.width = newWidth;
+        abstractionLayer.canvas.height = newHeight;
+
+        var gameBuffers = new Array(buffersUsed);
+
+        var bufferData = abstractionLayer.CreateBufferData(
+            newWidth,
+            newHeight);
+
+        for (let i = 0; i < gameBuffers.length; i++)
+        {
+            gameBuffers[i] = new GameBuffer(
+                new ImageData(bufferData, newWidth, newHeight),
+                newWidth,
+                newHeight);
+        }
+        abstractionLayer.game.Resize(gameBuffers, window.innerWidth, window.innerHeight);
     }
 }
 

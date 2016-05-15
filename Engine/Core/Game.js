@@ -6,11 +6,9 @@ class Game
 {
     constructor(gameBuffers, gameScreen)
     {
-        this.gameBuffers = gameBuffers;
-        this.gameScreen = gameScreen;
-        this.drawBuffer = gameBuffers[0];
-        this.screenBuffer = gameBuffers[0];
-        this.drawBufferIndex = 0;
+        this.screen = gameScreen;
+
+        this.renderer = new GameRenderer(gameBuffers);
 
         this.running = true;
         this.ascending = false;
@@ -21,21 +19,27 @@ class Game
     
     UpdateAndRender()
     {
-        let bufferInfo = this.drawBuffer;
-        let buffer = bufferInfo.Data;
-
-        let bufferWidth = bufferInfo.Width;
-        let bufferHeight = bufferInfo.Height;
-
-        for (let pixel = 0; pixel < buffer.length; pixel+=4)
+        let data = new Uint8ClampedArray(4);
+        data[0] = this.xOffset;
+        data[1] = 0;
+        data[2] = 0;
+        data[3] = 255;
+        /*for (let pixel = 0; pixel < buffer.length; pixel+=4)
         {
 
-            buffer[pixel]     = this.yOffset;
-            buffer[pixel + 1] = this.xOffset/2;
-            buffer[pixel + 2] = this.yOffset/2;
+            buffer[pixel]     = this.xOffset;
+            buffer[pixel + 1] = 0;
+            buffer[pixel + 2] = 0;
             buffer[pixel + 3] = 255;
 
-        }
+        }*/
+
+        //this.renderer.RenderColor(0,0,
+        //   this.screen.Width, this.screen.Height, data);
+        this.renderer.RenderColor(200, 200,
+            600, 400, data);
+
+
         if (this.xOffset >= 249)
         {
             this.ascending = false;
@@ -56,42 +60,28 @@ class Game
             this.yOffset = (this.yOffset-7) % 255;
         }
 
-        GameDebug.LogInfo(this, this.xOffset);
     }
 
     SwapBuffers()
     {
-        if (this.drawBufferIndex >= this.gameBuffers.length-1)
-        {
-            this.drawBufferIndex = 0;
-        }
-        else
-        {
-            this.drawBufferIndex++;
-        }
-        this.screenBuffer = this.drawBuffer;
-        this.drawBuffer = this.gameBuffers[this.drawBufferIndex];
+        this.renderer.SwapBuffers();
     }
 
-    CloseRequested()
+    Shutdown()
     {
         this.running = false;
     }
 
-    ResizeGame(newWidth, newHeight)
+    GetScreenBuffer()
     {
-        this.gameScreen.Width = newWidth;
-        this.gameScreen.Height = newHeight;
+        return this.renderer.screenBuffer.Info;
+    }
 
-        for (let i = 0; i < this.gameBuffers.length; i++)
-        {
-            this.gameBuffers[i] = new GameBuffer(
-                new ImageData(this.gameScreen.Width, this.gameScreen.Height),
-                this.gameScreen.Width,
-                this.gameScreen.Height);
-        }
+    Resize(gameBuffers, newWidth, newHeight)
+    {
+        this.screen.Width = newWidth;
+        this.screen.Height = newHeight;
 
-        this.drawBuffer = this.gameBuffers[0];
-        this.screenBuffer = this.gameBuffers[0];
+        this.renderer.Resize(gameBuffers);
     }
 }
