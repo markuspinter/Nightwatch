@@ -47,7 +47,7 @@ class GameRenderer
 
     RenderColor(xOffset, yOffset, width, height, data)
     {
-        GameDebug.StartTimer("buffer fill");
+        //GameDebug.StartTimer("buffer fill");
 
         if (N_typeof(data) == "Uint8ClampedArray")
         {
@@ -80,7 +80,7 @@ class GameRenderer
         {
             GameDebug.LogError(this, "Can't render data of type: " + N_typeof(data));
         }
-        GameDebug.EndTimer("buffer fill");
+        //GameDebug.EndTimer("buffer fill");
     }
 
     SwapBuffers()
