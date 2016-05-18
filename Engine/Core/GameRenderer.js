@@ -51,24 +51,24 @@ class GameRenderer
 
         if (N_typeof(data) == "Uint8ClampedArray")
         {
-            let r = data[0],
+            var r = data[0],
                 g = data[1],
                 b = data[2],
                 a = data[3];
 
-            let buffer = this.drawBuffer.data;
+            var buffer = this.drawBuffer.data;
 
-            let xStart = xOffset*4;
-            let absWidth = (xOffset+width)*4;
-            let absHeight = yOffset+height;
-            let bufferWidth = this.drawBuffer.Width*4;
+            var xStart = xOffset*4;
+            var absWidth = (xOffset+width)*4;
+            var absHeight = yOffset+height;
+            var bufferWidth = this.drawBuffer.Width*4;
 
-            for (let y = yOffset; y < absHeight ; y++)
+            for (var y = yOffset; y < absHeight ; y++)
             {
-                let row = (y*(bufferWidth));
-                for (let x = xStart; x < absWidth; x+=4)
+                var row = (y*(bufferWidth));
+                for (var x = xStart; x < absWidth; x+=4)
                 {
-                    let pixelInDrawBuffer = x+row;
+                    var pixelInDrawBuffer = x+row;
                     buffer[pixelInDrawBuffer] = r;
                     buffer[pixelInDrawBuffer+1] = g;
                     buffer[pixelInDrawBuffer+2] = b;

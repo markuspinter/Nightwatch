@@ -29,7 +29,7 @@ function gameStep()
 
         abstractionLayer.ctx.font = "18px sans-serif";
         abstractionLayer.ctx.fillStyle = "white";
-        abstractionLayer.ctx.fillText("Elapsed: " + deltaTime.toFixed(2),
+        abstractionLayer.ctx.fillText("Elapsed: " + deltaTime.toFixed(2) + "ms",
             100, 100);
         abstractionLayer.ctx.fillText("FPS:     " + fps.toFixed(0),
             100, 130);
