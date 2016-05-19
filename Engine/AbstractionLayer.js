@@ -19,6 +19,7 @@ function gameStep()
             game.SwapBuffers();
 
         }
+
         abstractionLayer.ctx.putImageData(game.GetScreenBuffer(), 0, 0);
         //--- Test ---
 

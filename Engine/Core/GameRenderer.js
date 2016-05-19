@@ -24,14 +24,14 @@ class GameRenderer
             let absHeight = yOffset+height;
             let bufferWidth = this.drawBuffer.Width*4;
 
-            for (let y = yOffset; y < absHeight ; y++)
+            for (var y = yOffset; y < absHeight ; y++)
             {
-                let row = (y*(bufferWidth));
-                let dataRow = ((y-yOffset)*(width));
-                for (let x = xStart; x < absWidth; x+=4)
+                var row = (y*(bufferWidth));
+                var dataRow = ((y-yOffset)*(width));
+                for (var x = xStart; x < absWidth; x+=4)
                 {
-                    let pixelInDrawBuffer = x+row;
-                    let pixelInData = (x-xStart)+dataRow;
+                    var pixelInDrawBuffer = x+row;
+                    var pixelInData = (x-xStart)+dataRow;
                     buffer[pixelInDrawBuffer] = data[pixelInData];
                     buffer[pixelInDrawBuffer+1] = data[pixelInData+1];
                     buffer[pixelInDrawBuffer+2] = data[pixelInData+2];
