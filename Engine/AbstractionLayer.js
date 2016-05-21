@@ -4,7 +4,7 @@
 
 var abstractionLayer;
 var lastMilliseconds = new Date();
-var buffersUsed = 2;
+
 function gameStep()
 {
     if (abstractionLayer.game.running)
@@ -26,6 +26,8 @@ function gameStep()
         let deltaTime = currentMilliseconds - lastMilliseconds;
         let fps = 1000/deltaTime;
         lastMilliseconds = currentMilliseconds;
+
+        game.globalTimer.Step(deltaTime.toFixed(3)/1000);
 
         abstractionLayer.ctx.font = "18px sans-serif";
         abstractionLayer.ctx.fillStyle = "white";
@@ -61,7 +63,7 @@ class AbstractionLayer
 
         var gameScreen = new GameScreen(canvas.width, canvas.height);
 
-        var gameBuffers = new Array(buffersUsed);
+        var gameBuffers = new Array(BUFFERING);
 
         var bufferData = this.CreateBufferData(gameScreen.Width, gameScreen.Height);
 
@@ -113,7 +115,7 @@ class AbstractionLayer
         abstractionLayer.canvas.width = newWidth;
         abstractionLayer.canvas.height = newHeight;
 
-        var gameBuffers = new Array(buffersUsed);
+        var gameBuffers = new Array(BUFFERING);
 
         var bufferData = abstractionLayer.CreateBufferData(
             newWidth,
@@ -126,7 +128,7 @@ class AbstractionLayer
                 newWidth,
                 newHeight);
         }
-        abstractionLayer.game.Resize(gameBuffers, window.innerWidth, window.innerHeight);
+        abstractionLayer.game.Resize(gameBuffers, newWidth, newHeight);
     }
 }
 

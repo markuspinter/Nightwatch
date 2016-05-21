@@ -9,6 +9,7 @@ class Game
         this.screen = gameScreen;
 
         this.renderer = new GameRenderer(gameBuffers);
+        this.globalTimer = new Timer(GAMESPEED);
 
         this.running = true;
         this.redAscending = false;
@@ -23,10 +24,16 @@ class Game
     UpdateAndRender()
     {
         let data = new Uint8ClampedArray(4);
-        data[0] = this.redOffset;
-        data[1] = this.greenOffset;
-        data[2] = this.blueOffset;
+
+        var deltaTime = this.globalTimer.DeltaTime;
+
+        data[0] = this.redOffset %= 255;
+        data[1] = this.greenOffset %= 255;
+        data[2] = this.blueOffset %= 255;
         data[3] = 255;
+
+
+
         /*for (let pixel = 0; pixel < buffer.length; pixel+=4)
         {
 
@@ -45,61 +52,104 @@ class Game
         //this.renderer.RenderColor(1200, 400,
         //    600, 400, data);
 
+        var speed = 300*deltaTime;
 
         if (this.redOffset >= 249)
         {
-            this.redAscending = false;
+            if (speed < 0)
+            {
+                this.redAscending = true;
+            }
+            else
+            {
+                this.redAscending = false;
+            }
+
         }
         else if (this.redOffset <= 5)
         {
-            this.redAscending = true;
+            if (speed < 0)
+            {
+                this.redAscending = false;
+            }
+            else
+            {
+                this.redAscending = true;
+            }
         }
 
         if (this.redAscending)
         {
-            this.redOffset = (this.redOffset+3) % 255;
+            this.redOffset = (this.redOffset+speed);
         }
         else
         {
-            this.redOffset = (this.redOffset-3) % 255;
+            this.redOffset = (this.redOffset-speed);
         }
 
         if (this.greenOffset >= 249)
         {
-            this.greenAscending = false;
+            if (speed < 0)
+            {
+                this.greenAscending = true;
+            }
+            else
+            {
+                this.greenAscending = false;
+            }
         }
         else if (this.greenOffset <= 5)
         {
-            this.greenAscending = true;
+            if (speed < 0)
+            {
+                this.greenAscending = false;
+            }
+            else
+            {
+                this.greenAscending = true;
+            }
         }
 
         if (this.greenAscending)
         {
-            this.greenOffset = (this.greenOffset+3) % 255;
+            this.greenOffset = (this.greenOffset+speed);
         }
         else
         {
-            this.greenOffset = (this.greenOffset-3) % 255;
+            this.greenOffset = (this.greenOffset-speed);
         }
 
         if (this.blueOffset >= 249)
         {
-            this.blueAscending = false;
+            if (speed < 0)
+            {
+                this.blueAscending = true;
+            }
+            else
+            {
+                this.blueAscending = false;
+            }
         }
         else if (this.blueOffset <= 5)
         {
-            this.blueAscending = true;
+            if (speed < 0)
+            {
+                this.blueAscending = false;
+            }
+            else
+            {
+                this.blueAscending = true;
+            }
         }
 
         if (this.blueAscending)
         {
-            this.blueOffset = (this.blueOffset+3) % 255;
+            this.blueOffset = (this.blueOffset+speed);
         }
         else
         {
-            this.blueOffset = (this.blueOffset-3) % 255;
+            this.blueOffset = (this.blueOffset-speed);
         }
-
     }
 
     SwapBuffers()

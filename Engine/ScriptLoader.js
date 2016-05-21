@@ -64,9 +64,11 @@ $(document).ready(function()
 
     }
 
+    LoadScript("Engine/Settings.js", OnLoaded);
     LoadScript("Engine/Debug.js", OnLoaded);
     LoadScript("Engine/Tools.js", OnLoaded);
     LoadScript("Engine/Core/Common.js", OnLoaded);
+    LoadScript("Engine/Core/Timer.js", OnLoaded);
     LoadScript("Engine/Core/Game.js", OnLoaded);
     LoadScript("Engine/Core/GameRenderer.js", OnLoaded);
     LoadScript("Engine/AbstractionLayer.js", function ()
