@@ -10,6 +10,7 @@ class Game
 
         this.renderer = new GameRenderer(gameBuffers);
         this.globalTimer = new Timer(GAMESPEED);
+        this.testLocalTimer = new LocalTimer(this.globalTimer, 1);
 
         this.running = true;
         this.redAscending = false;
@@ -19,13 +20,16 @@ class Game
         this.redOffset = 0;
         this.greenOffset = 123;
         this.blueOffset = 254;
+
+        var resourceLoader = new ResourceLoader();
+        resourceLoader.LoadResource("README.md");
     }
     
     UpdateAndRender()
     {
         let data = new Uint8ClampedArray(4);
 
-        var deltaTime = this.globalTimer.DeltaTime;
+        var deltaTime = this.testLocalTimer.DeltaTime;
 
         data[0] = this.redOffset %= 255;
         data[1] = this.greenOffset %= 255;

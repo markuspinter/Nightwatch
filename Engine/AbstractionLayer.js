@@ -29,6 +29,7 @@ function gameStep()
         lastMilliseconds = currentMilliseconds;
 
         game.globalTimer.Step(deltaTime.toFixed(3)/1000);
+        game.testLocalTimer.Step();
 
         abstractionLayer.ctx.font = "18px sans-serif";
         abstractionLayer.ctx.fillStyle = "white";
@@ -78,15 +79,17 @@ class AbstractionLayer
                 gameScreen.Width,
                 gameScreen.Height);
         }
+
+        window.onbeforeunload = this.CloseRequested;
+        window.onresize = this.Resize;
+        abstractionLayer = this;
+
         this.game = new Game(gameBuffers, gameScreen);
             
         //this.drawBuffer = this.gameBuffers[0];
 
         //this.DrawBufferTest();
 
-        abstractionLayer = this;
-        window.onbeforeunload = abstractionLayer.CloseRequested;
-        window.onresize = abstractionLayer.Resize;
         gameStep();
     }
 
@@ -101,6 +104,27 @@ class AbstractionLayer
             buffer[i+3] = 255;
         }
         return buffer;
+    }
+
+    ReadFile(filePath, callback)
+    {
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            try
+            {
+                $(document).load(filePath, function (text) {
+                    callback(text);
+                });
+                
+            }
+            catch (e)
+            {
+                GameDebug.LogError(this, e.message);
+            }
+        } else {
+            GameDebug.LogError(this, 'The File APIs are not fully supported by your browser.');
+        }
+
+
     }
 
     CloseRequested()
