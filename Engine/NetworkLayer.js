@@ -74,6 +74,10 @@ class Socket
         }
     }
 
+    Terminate()
+    {
+        this.client.terminate();
+    }
 }
 
 class NetworkManager
@@ -113,6 +117,7 @@ class NetworkManager
             this.socket.Connect('localhost', 2541);
 
             var _this = this;
+            var isThief = false;
 
             game.lvlManager.OnLevelLoadDone = function (success)
             {
@@ -159,7 +164,7 @@ class NetworkManager
                         GameDebug.LogError(_this, N_Response.N_Error.Code + ':' +
                             N_Response.N_Error.Message);
 
-                        //TODO: Treminate connection
+                        //TODO: Treminate connection if error is fatal
                         //TODO: Output Error onto Screen and go back to menu;
                     }
                     else if (_this.connState == NetworkState.Request)
@@ -181,17 +186,34 @@ class NetworkManager
                         {
                             _this.connState = NetworkState.Setup;
 
+                            if (message.N_Setup.Role.match(/thief/i))
+                            {
+                                isThief = true;
+                            }
+
                             game.OnLevelLoad(game, message.N_Setup.Level,
                                                     message.N_Setup.Role);
                         }
                     }
                     else if (_this.connState == NetworkState.LevelLoadDone)
                     {
-                        if (message.N_Init)
+                        if (isThief)
                         {
-                            _this.connState = NetworkState.Init;
+                            if (message.N_Init)
+                            {
+                                _this.connState = NetworkState.Init;
 
-                            game.OnPositionGuards(game, message.N_Init.Positions);
+                                game.OnPositionGuards(game, message.N_Init.Positions);
+                            }
+                        }
+                        else
+                        {
+                            if (message.N_Update)
+                            {
+                                _this.connState = NetworkState.Update;
+
+                                game.OnUpdateGameInfo(game, message.N_Update);
+                            }
                         }
                     }
                     else if (_this.connState = NetworkState.Update)
@@ -218,7 +240,7 @@ class NetworkManager
     OnLevelLoadDone(_this, success)
     {
         _this.connState = NetworkState.LevelLoadDone;
-        var N_LevelLoad = {N_LevelLoad : (success)?"Success":"Failed"};
+        var N_LevelLoad = {N_LevelLoad : (success) ? "Success" : "Failed"};
 
         _this.socket.Send(JSON.stringify(N_LevelLoad));
     }
