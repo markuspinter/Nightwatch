@@ -18,16 +18,12 @@ class Game
         this.blueAscending = false;
         this.netManager = new NetworkManager();
         this.lvlManager = new LevelManager();
-        this.netManager.Connect("PraiseIt", "Sun", ["N_Park"], ["N_Museum"], this);
+        //this.netManager.Connect("PraiseIt", "Sun", ["N_Park"], ["N_Museum"], this);
 
 
         this.redOffset = 0;
         this.greenOffset = 123;
         this.blueOffset = 254;
-
-        //TEST
-        var resourceLoader = new ResourceLoader();
-        resourceLoader.LoadResource("README.md");
     }
 
     OnLevelLoad(_this, level, role)

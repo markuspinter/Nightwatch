@@ -106,25 +106,21 @@ class AbstractionLayer
         return buffer;
     }
 
-    ReadFile(caller, filePath, callback)
+    ReadJson(caller, filePath, callback)
     {
-        if (window.File && window.FileReader && window.FileList && window.Blob) {
-            try
-            {
-                $(document).load(filePath, function (text) {
-                    callback(caller, text);
-                });
-                
-            }
-            catch (e)
-            {
-                GameDebug.LogError(this, e.message);
-            }
-        } else {
-            GameDebug.LogError(this, 'The File APIs are not fully supported by your browser.');
+        try
+        {
+            $.getJSON(filePath, function (data) {
+                callback(caller, data);
+            }).fail(function( jqxhr, textStatus, error ) {
+                var err = textStatus + ", " + error;
+                console.log( "Request Failed: " + err )});
+
         }
-
-
+        catch (e)
+        {
+            GameDebug.LogError(this, e.message);
+        }
     }
 
     CloseRequested()

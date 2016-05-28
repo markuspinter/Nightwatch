@@ -1,0 +1,36 @@
+{
+    "N_Resources" :
+    {
+        "Version" : 1.0,
+
+        "Data" :
+        {
+            "Museum" :
+            {
+                "Id" : 16,
+                "Width" : 4,
+                "Height" : 4,
+                "Source" : "res/asdf.spr"
+            },
+            "Thief" :
+            {
+                "Id" : 12,
+                "Width" : 4,
+                "Height" : 4,
+                "Source" : "res/thief.anm"
+            },
+            "Guard" :
+            {
+                "Id" : 13,
+                "Width" : 4,
+                "Height" : 4,
+                "Source" : "res/guard.anm"
+            },
+            "Mona Lisa" :
+            {
+                "Id" : 200,
+                "Source" : "res/monalisa.png"
+            }
+        }
+    }
+}

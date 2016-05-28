@@ -14,13 +14,46 @@ class LevelManager
 {
     constructor()
     {
-        this.levelLoader = new LevelLoader();
+        this.lvlLoader = new LevelLoader();
+        this.resManager = new ResourceManager();
+
+        this.staticObjects = [];
+        this.dynamicObjects = [];
     }
 
     OnLevelLoad(_this, level, role)
     {
         GameDebug.LogInfo(_this, "LevelLoad invoked: " + level + " : " + role);
         //TODO: Load Level properly;
+
+        abstractionLayer.ReadJson(_this, level+'.lif', _this.OnLevelLoadAssets);
+
+    }
+
+    OnLevelLoadAssets(_this, data)
+    {
+        GameDebug.LogObject(data);
+
+        if (data.N_Level)
+        {
+            let lvlData = data.N_Level.Data;
+
+            for (let key in lvlData.Static)
+            {
+                let staticObj = lvlData.Static[key];
+
+                
+            }
+
+            for (let key in lvlData.Dynamic)
+            {
+                let elem = lvlData[key];
+
+            }
+        }
+
+
+
         _this.OnLevelLoadDone(true);
     }
 

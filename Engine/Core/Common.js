@@ -98,3 +98,155 @@ class GameBuffer
         this.height = height;
     }
 }
+
+class Vec2
+{
+    constructor(x,y)
+    {
+        this.x = 0;
+        this.y = 0;
+        if (N_typeof(x) == "Number")
+        {
+            this.x = x;
+        }
+        if (N_typeof(y) == "Number")
+        {
+            this.y = y;
+        }
+    }
+
+    Add(other)
+    {
+        let result;
+        if (N_typeof(other) == "Vec2")
+        {
+            result = new Vec2(this.x+other.x, this.y+other.y);
+        }
+        else
+        {
+            GameDebug.LogError(this, "other is no Vec2");
+        }
+        return result;
+    }
+
+    Sub(other)
+    {
+        let result;
+        if (N_typeof(other) == "Vec2")
+        {
+            result = new Vec2(this.x-other.x, this.y-other.y);
+        }
+        else
+        {
+            GameDebug.LogError(this, "other is no Vec2");
+        }
+        return result;
+    }
+
+    Mag()
+    {
+        return Math.sqrt(Math.pow(this.x, 2)+Math.pow(this.y, 2));
+    }
+
+    Mul(scalar)
+    {
+        let result;
+        if (N_typeof(other) == "Number")
+        {
+            result = new Vec2(this.x * scalar, this.y * scalar);
+        }
+        else
+        {
+            GameDebug.LogError(this, "scalar is not a number");
+        }
+        return result;
+    }
+
+    Dot(other)
+    {
+        let result;
+        if (N_typeof(other) == "Vec2")
+        {
+            result = (this.x * other.x) + (this.y * other.y);
+        }
+        else
+        {
+            GameDebug.LogError(this, "other is no Vec2");
+        }
+        return result;
+    }
+}
+
+class Vec3 extends Vec2
+{
+    constructor(x,y,z)
+    {
+        super(x,y);
+        this.z = 0;
+        if (N_typeof(z) == "Number")
+        {
+            this.z = z;
+        }
+    }
+
+    Add(other)
+    {
+        let result;
+        if (N_typeof(other) == "Vec3")
+        {
+            result = new Vec3(this.x+other.x, this.y+other.y, this.z+other.z);
+        }
+        else
+        {
+            GameDebug.LogError(this, "other is no Vec3");
+        }
+        return result;
+    }
+
+    Sub(other)
+    {
+        let result;
+        if (N_typeof(other) == "Vec3")
+        {
+            result = new Vec3(this.x-other.x, this.y-other.y, this.z-other.z);
+        }
+        else
+        {
+            GameDebug.LogError(this, "other is no Vec3");
+        }
+        return result;
+    }
+
+    Mag()
+    {
+        return Math.sqrt(Math.pow(this.x, 2)+Math.pow(this.y, 2)+Math.pow(this.z, 2));
+    }
+
+    Mul(scalar)
+    {
+        let result;
+        if (N_typeof(other) == "Number")
+        {
+            result = new Vec3(this.x * scalar, this.y * scalar, this.z * scalar);
+        }
+        else
+        {
+            GameDebug.LogError(this, "scalar is not a number");
+        }
+        return result;
+    }
+
+    Dot(other)
+    {
+        let result;
+        if (N_typeof(other) == "Vec3")
+        {
+            result = (this.x * other.x) + (this.y * other.y) + (this.z * other.z);
+        }
+        else
+        {
+            GameDebug.LogError(this, "other is no Vec3");
+        }
+        return result;
+    }
+}

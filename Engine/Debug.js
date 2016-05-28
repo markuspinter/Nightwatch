@@ -41,6 +41,14 @@ class Debug
         }
     }
 
+    LogObject(obj)
+    {
+        if (DEBUG)
+        {
+            console.log(obj);
+        }
+    }
+
     StartTimer(key)
     {
         if (DEBUG)
