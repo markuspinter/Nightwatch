@@ -17,14 +17,32 @@ class Game
         this.greenAscending = false;
         this.blueAscending = false;
         this.netManager = new NetworkManager();
-        this.netManager.Connect("PraiseIt", "Sun", ["N_Park"], ["N_Museum"]);
+        this.lvlManager = new LevelManager();
+        this.netManager.Connect("PraiseIt", "Sun", ["N_Park"], ["N_Museum"], this);
+
 
         this.redOffset = 0;
         this.greenOffset = 123;
         this.blueOffset = 254;
 
+        //TEST
         var resourceLoader = new ResourceLoader();
         resourceLoader.LoadResource("README.md");
+    }
+
+    OnLevelLoad(_this, level, role)
+    {
+        _this.lvlManager.OnLevelLoad(_this.lvlManager, level, role);
+    }
+
+    OnPositionGuards(_this, positions)
+    {
+        _this.lvlManager.OnPositionGuards(_this.lvlManager, positions);
+    }
+
+    OnUpdateGameInfo(_this, updateInfo)
+    {
+        _this.lvlManager.OnUpdateGameInfo(_this.lvlManager, updateInfo);
     }
     
     UpdateAndRender()
