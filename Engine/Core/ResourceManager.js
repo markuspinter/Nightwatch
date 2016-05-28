@@ -31,14 +31,14 @@ class ResourceLoader
             }
             else
             {
-                abstractionLayer.ReadFile(filePath, this.OnResourceLoaded);
+                abstractionLayer.ReadFile(this, filePath, this.OnResourceLoaded);
             }
         }
 
     }
 
-    OnResourceLoaded(text)
+    OnResourceLoaded(caller, text)
     {
-        alert(text);
+        GameDebug.LogInfo(caller, text);
     }
 }

@@ -16,6 +16,8 @@ class Game
         this.redAscending = false;
         this.greenAscending = false;
         this.blueAscending = false;
+        this.netManager = new NetworkManager();
+        this.netManager.Connect("PraiseIt", "Sun", ["N_Park"], ["N_Museum"]);
 
         this.redOffset = 0;
         this.greenOffset = 123;

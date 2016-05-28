@@ -67,6 +67,7 @@ $(document).ready(function()
     LoadScript("Engine/Settings.js", OnLoaded);
     LoadScript("Engine/Debug.js", OnLoaded);
     LoadScript("Engine/Tools.js", OnLoaded);
+    LoadScript("Engine/NetworkLayer.js", OnLoaded);
     LoadScript("Engine/Core/Common.js", OnLoaded);
     LoadScript("Engine/Core/ResourceManager.js", OnLoaded);
     LoadScript("Engine/Core/Timer.js", OnLoaded);

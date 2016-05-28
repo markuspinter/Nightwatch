@@ -106,13 +106,13 @@ class AbstractionLayer
         return buffer;
     }
 
-    ReadFile(filePath, callback)
+    ReadFile(caller, filePath, callback)
     {
         if (window.File && window.FileReader && window.FileList && window.Blob) {
             try
             {
                 $(document).load(filePath, function (text) {
-                    callback(text);
+                    callback(caller, text);
                 });
                 
             }
