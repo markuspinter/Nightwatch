@@ -18,7 +18,7 @@ class Game
         this.blueAscending = false;
         this.netManager = new NetworkManager();
         this.lvlManager = new LevelManager();
-        //this.netManager.Connect("PraiseIt", "Sun", ["N_Park"], ["N_Museum"], this);
+        this.netManager.Connect("PraiseIt", "Sun", ["N_Park"], ["Thief", "Guard"], this);
 
 
         this.redOffset = 0;
