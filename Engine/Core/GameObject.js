@@ -12,4 +12,9 @@ class GameObject
         this.layer = 0;
         this.children = [];
     }
+
+    AddChild(gameObj)
+    {
+        this.children.push(gameObj);
+    }
 }

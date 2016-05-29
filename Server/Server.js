@@ -1,4 +1,4 @@
-﻿var WebSocketServer = require('ws').Server
+﻿var WebSocketServer = require('../Lib/ws').Server
   , wss = new WebSocketServer({ port: 2541 });
 
 var global_counter = 0;
