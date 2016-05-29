@@ -10,16 +10,19 @@
             {
                 "Grass 1" :
                 {
-                    "Id" : 1,        //this is the texture id of the object
-                    "X" : 10,        //--this is the upper left corner
-                    "Y" : 10,        //---of the tile for simpler positioning
-                    "Layer" : 3,     //----layer to be drawn on
-                    "Solid" : false, //specifies if player should collide with this tile
-                    "Children" :
-                    {
-                        //Here can be any static object where its
-                        //reference point is the top left corner of the parent object
-                    }
+                    "Id" : 1,
+                    "X" : 10,
+                    "Y" : 10,
+                    "Layer" : 1,
+                    "Solid" : false
+                },
+                "Dirt 1" :
+                {
+                    "Id" : 2,
+                    "X" : 12,
+                    "Y" : 12,
+                    "Layer" : 1,
+                    "Solid" : false
                 }
             },
             "Dynamic" :
@@ -29,7 +32,8 @@
                     "Id" : 12,
                     "X" : 20,
                     "Y" : 20,
-                    "Direction" : "N",
+                    "Layer" : 3,
+                    "Direction" : "N"
                 }
             }
         }

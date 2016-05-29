@@ -16,23 +16,37 @@ class LevelManager
     {
         this.lvlLoader = new LevelLoader();
         this.resManager = new ResourceManager();
+        this.role = "";
 
-        this.staticObjects = [];
-        this.dynamicObjects = [];
+        this.lvlObjects = {};
+
+        //TEST
+        this.OnLevelLoad(this, "N_Park", "Thief");
+    }
+
+    AddGameObject(_this, gameObject)
+    {
+        if (_this.lvlObjects[gameObject.layer] === undefined)
+        {
+            _this.lvlObjects[gameObject.layer] = [];
+        }
+        _this.lvlObjects[gameObject.layer].push(gameObject);
     }
 
     OnLevelLoad(_this, level, role)
     {
         GameDebug.LogInfo(_this, "LevelLoad invoked: " + level + " : " + role);
         //TODO: Load Level properly;
+        _this.role = role;
 
-        abstractionLayer.ReadJson(_this, level+'.lif', _this.OnLevelLoadAssets);
+        abstractionLayer.ReadJson(_this, 'Res/'+level+'.lif', _this.OnLevelLoadAssets);
 
     }
 
     OnLevelLoadAssets(_this, data)
     {
         GameDebug.LogObject(data);
+        GameDebug.LogObject(_this.lvlObjects);
 
         if (data.N_Level)
         {
@@ -42,17 +56,36 @@ class LevelManager
             {
                 let staticObj = lvlData.Static[key];
 
-                
+                let currGameObj = new GameObject();
+
+                currGameObj.isStatic = true;
+                currGameObj.position.x += staticObj.X;
+                currGameObj.position.y += staticObj.Y;
+                currGameObj.textureId = staticObj.Id;
+                currGameObj.layer = staticObj.Layer;
+                currGameObj.isSolid = staticObj.Solid;
+
+                //TODO: add children support;
+
+                _this.AddGameObject(_this, currGameObj);
             }
 
             for (let key in lvlData.Dynamic)
             {
-                let elem = lvlData[key];
+                let dynamicObj = lvlData.Dynamic[key];
 
+                let currGameObj = new GameObject();
+
+                currGameObj.position.x += dynamicObj.X;
+                currGameObj.position.y += dynamicObj.Y;
+                currGameObj.layer = dynamicObj.Layer;
+                currGameObj.textureId = dynamicObj.Id;
+
+                //TODO: add children support;
+
+                _this.AddGameObject(_this, currGameObj);
             }
         }
-
-
 
         _this.OnLevelLoadDone(true);
     }
