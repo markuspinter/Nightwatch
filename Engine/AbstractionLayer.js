@@ -13,7 +13,7 @@ function gameStep()
 
         var game = abstractionLayer.game;
 
-        abstractionLayer.ctx.putImageData(game.GetScreenBuffer(), 0, 0);
+        abstractionLayer.ClearBuffer();
         if ($("#render")[0].checked)
         {
             game.UpdateAndRender();
@@ -31,6 +31,7 @@ function gameStep()
 
         game.globalTimer.Step(deltaTime.toFixed(3)/1000);
         game.testLocalTimer.Step();
+
 
         abstractionLayer.ctx.font = "18px sans-serif";
         abstractionLayer.ctx.fillStyle = "white";
@@ -92,6 +93,15 @@ class AbstractionLayer
         //this.DrawBufferTest();
 
         gameStep();
+    }
+
+    ClearBuffer()
+    {
+        this.ctx.mozImageSmoothingEnabled = false;
+        this.ctx.webkitImageSmoothingEnabled = false;
+        this.ctx.msImageSmoothingEnabled = false;
+        this.ctx.imageSmoothingEnabled = false;
+        this.ctx.putImageData(this.game.GetScreenBuffer(), 0, 0);
     }
 
     CreateBufferData(width, height)
