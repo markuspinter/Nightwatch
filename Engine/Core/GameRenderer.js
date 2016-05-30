@@ -4,11 +4,12 @@
 
 class GameRenderer
 {
-    constructor(gameBuffers)
+    constructor(ctx, gameBuffers)
     {
         this.gameBuffers = gameBuffers;
         this.drawBuffer = gameBuffers[0];
         this.screenBuffer = gameBuffers[0];
+        this.ctx = ctx;
         this.drawBufferIndex = 0;
     }
 
@@ -43,6 +44,73 @@ class GameRenderer
         {
             GameDebug.LogError(this, "Can't render data of type: " + N_typeof(data));
         }
+    }
+
+    RenderGameObject(resManager, gameObj)
+    {
+        if (N_typeof(gameObj) == "GameObject")
+        {
+            var x = gameObj.position.x;
+            var y = gameObj.position.y;
+            var texId = gameObj.textureId;
+
+            var texture = resManager.GetTexture(texId);
+
+            if (N_typeof(texture) == "Sprite")
+            {
+                var img = texture.img;
+                var tileId = resManager.GetTileId(texId);
+                var tileCoords = texture.GetTileCoord(tileId);
+
+                if (gameObj.isStatic)
+                {
+                    this.ctx.drawImage(img, tileCoords.x*texture.width*SCALE,
+                        tileCoords.y*texture.width*SCALE,
+                        texture.tileWidth,
+                        texture.tileHeight,
+                        x*SCALE, y*SCALE,
+                        texture.tileWidth*SCALE,
+                        texture.tileHeight*SCALE);
+                }
+                else
+                {
+                    this.ctx.drawImage(img, tileCoords.x,
+                        tileCoords.y,
+                        texture.tileWidth,
+                        texture.tileHeight,
+                        x*SCALE, y*SCALE,
+                        texture.tileWidth*SCALE,
+                        texture.tileHeight*SCALE);
+                }
+
+            }
+            else if (N_typeof(texture) == "HTMLImageElement")
+            {
+                if (gameObj.isStatic)
+                {
+                    this.ctx.drawImage(texture, x*texture.width*SCALE, y*texture.width*SCALE,
+                        texture.width*SCALE, texture.height*SCALE);
+                }
+                else
+                {
+                    this.ctx.drawImage(texture, x*SCALE, y*SCALE,
+                                        texture.width*SCALE, texture.height*SCALE);
+                }
+
+            }
+            else
+            {
+                GameDebug.LogError(this, "Object to be drawn not supported: " +
+                    N_typeof(texture));
+            }
+
+
+        }
+        else
+        {
+            GameDebug.LogError(this, "Parameter must be of type GameObject");
+        }
+
     }
 
     RenderColor(xOffset, yOffset, width, height, data)

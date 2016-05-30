@@ -13,6 +13,7 @@ function gameStep()
 
         var game = abstractionLayer.game;
 
+        abstractionLayer.ctx.putImageData(game.GetScreenBuffer(), 0, 0);
         if ($("#render")[0].checked)
         {
             game.UpdateAndRender();
@@ -20,7 +21,7 @@ function gameStep()
 
         }
 
-        abstractionLayer.ctx.putImageData(game.GetScreenBuffer(), 0, 0);
+
         //--- Test ---
 
         let currentMilliseconds = new Date();
@@ -84,7 +85,7 @@ class AbstractionLayer
         window.onresize = this.Resize;
         abstractionLayer = this;
 
-        this.game = new Game(gameBuffers, gameScreen);
+        this.game = new Game(ctx, gameBuffers, gameScreen);
             
         //this.drawBuffer = this.gameBuffers[0];
 

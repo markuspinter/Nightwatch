@@ -7,14 +7,53 @@ class ResourceManager
     constructor()
     {
         this.resLoader = new ResourceLoader();
-        this.resourceImages = N_array(256);
+        this.textures = N_array(MAXTEXTURES);
+
+        this.voidTexture = new Image();
+        this.voidTexture.src = VOIDTEXTURE;
+
+        this.textures[0] = this.voidTexture;
         
         abstractionLayer.ReadJson(this, RESOURCEFILE, this.OnResourceFileLoaded);
     }
 
+    GetTexture(textureId)
+    {
+        var texture = null;
+        if (N_typeof(textureId) == "Number" &&
+            textureId >= 0 &&
+            textureId < MAXTEXTURES)
+        {
+            texture = this.textures[textureId];
+
+            if (N_typeof(texture) == "Number")
+            {
+                if (texture == 0)
+                {
+                    texture = this.voidTexture;
+                }
+                else
+                {
+                    texture = this.textures[textureId-texture];
+                }
+
+            }
+        }
+        else
+        {
+            GameDebug.LogError(this, "TextureId must be typeof Number.");
+        }
+        return texture;
+    }
+
+    GetTileId(textureId)
+    {
+        return this.textures[textureId];
+    }
+
     OnResourceFileLoaded(_this, data)
     {
-        GameDebug.LogObject(_this.resourceImages);
+        GameDebug.LogObject(_this.textures);
         if (data.N_Resources)
         {
             var resData = data.N_Resources.Data;
@@ -32,15 +71,15 @@ class ResourceManager
                         if (elem.Source.match(/\w*.anm/i) || elem.Source.match(/\w*.spr/i))
                         {
                             //NOTE: maybe loading failed because let var img got destroyed
-                            _this.resourceImages[id] = new Sprite(img, elem.Width, elem.Height);
+                            _this.textures[id] = new Sprite(img, elem.Width, elem.Height);
                             for (var i = 1; i < (elem.Width * elem.Height); i++)
                             {
-                                _this.resourceImages[id+i] = i;
+                                _this.textures[id+i] = i;
                             }
                         }
                         else
                         {
-                            _this.resourceImages[id] = img;
+                            _this.textures[id] = img;
                         }
                     }
 
@@ -54,7 +93,7 @@ class ResourceManager
                 
             }
         }
-        GameDebug.LogObject(_this.resourceImages);
+        GameDebug.LogObject(_this.textures);
     }
 }
 

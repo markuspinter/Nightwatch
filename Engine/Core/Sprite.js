@@ -26,9 +26,10 @@ class Sprite
 
     GetTileCoord(index)
     {
-        var x = (index % this.width) * this.tileWidth;
-        var y = (index / this.width).toFixed(0) * this.tileHeight;
+        var coords = new Vec2();
+        coords.x = (index % this.width) * this.tileWidth;
+        coords.y = (index / this.width).toFixed(0) * this.tileHeight;
 
-        return x,y;
+        return coords;
     }
 }

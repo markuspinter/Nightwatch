@@ -4,11 +4,11 @@
 
 class Game
 {
-    constructor(gameBuffers, gameScreen)
+    constructor(ctx, gameBuffers, gameScreen)
     {
         this.screen = gameScreen;
 
-        this.renderer = new GameRenderer(gameBuffers);
+        this.renderer = new GameRenderer(ctx, gameBuffers);
         this.globalTimer = new Timer(GAMESPEED);
         this.testLocalTimer = new LocalTimer(this.globalTimer, 1);
 
@@ -18,7 +18,7 @@ class Game
         this.blueAscending = false;
         this.netManager = new NetworkManager();
         this.lvlManager = new LevelManager();
-        this.netManager.Connect("PraiseIt", "Sun", ["N_Park"], ["Thief", "Guard"], this);
+        //this.netManager.Connect("PraiseIt", "Sun", ["N_Park"], ["Thief", "Guard"], this);
 
 
         this.redOffset = 0;
@@ -43,7 +43,18 @@ class Game
     
     UpdateAndRender()
     {
-        let data = new Uint8ClampedArray(4);
+        var lvlObjects = this.lvlManager.LevelObjects;
+        var layers = Object.keys(lvlObjects).sort();
+        for (var layer in layers)
+        {
+            var layerObj = lvlObjects[layer];
+            for (var gameObj in layerObj)
+            {
+                this.renderer.RenderGameObject(this.lvlManager.resManager, layerObj[gameObj]);
+            }
+        }
+        
+        /*let data = new Uint8ClampedArray(4);
 
         var deltaTime = this.testLocalTimer.DeltaTime;
 
@@ -51,18 +62,6 @@ class Game
         data[1] = this.greenOffset %= 255;
         data[2] = this.blueOffset %= 255;
         data[3] = 255;
-
-
-
-        /*for (let pixel = 0; pixel < buffer.length; pixel+=4)
-        {
-
-            buffer[pixel]     = this.xOffset;
-            buffer[pixel + 1] = 0;
-            buffer[pixel + 2] = 0;
-            buffer[pixel + 3] = 255;
-
-        }*/
 
         this.renderer.RenderColor(0,0,
            this.screen.Width, this.screen.Height, data);
@@ -169,7 +168,7 @@ class Game
         else
         {
             this.blueOffset = (this.blueOffset-speed);
-        }
+        }*/
     }
 
     SwapBuffers()

@@ -21,7 +21,12 @@ class LevelManager
         this.lvlObjects = {};
 
         //TEST
-        //this.OnLevelLoad(this, "N_Park", "Thief");
+        this.OnLevelLoad(this, "N_Park", "Thief");
+    }
+
+    get LevelObjects()
+    {
+        return this.lvlObjects;
     }
 
     AddGameObject(_this, gameObject)
