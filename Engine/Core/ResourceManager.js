@@ -46,9 +46,14 @@ class ResourceManager
         return texture;
     }
 
-    GetTileId(textureId)
-    {
-        return this.textures[textureId];
+    GetTileId(textureId) {
+        var tileId = 0;
+        var resInfo = this.textures[textureId];
+        if (N_typeof(resInfo) == "Number")
+        {
+            tileId = resInfo;
+        }
+        return tileId;
     }
 
     OnResourceFileLoaded(_this, data)

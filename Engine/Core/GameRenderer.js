@@ -64,10 +64,10 @@ class GameRenderer
 
                 if (gameObj.isStatic)
                 {
-                    this.ctx.drawImage(img, tileCoords.x*texture.width*SCALE,
-                        tileCoords.y*texture.width*SCALE,
-                        texture.tileWidth,
-                        texture.tileHeight,
+                    this.ctx.drawImage(img, tileCoords.x,
+                        tileCoords.y,
+                        texture.tileWidth+tileCoords.x,
+                        texture.tileHeight+tileCoords.y,
                         x*SCALE, y*SCALE,
                         texture.tileWidth*SCALE,
                         texture.tileHeight*SCALE);

@@ -28,7 +28,7 @@ class Sprite
     {
         var coords = new Vec2();
         coords.x = (index % this.width) * this.tileWidth;
-        coords.y = (index / this.width).toFixed(0) * this.tileHeight;
+        coords.y = (Math.trunc(index / this.width)) * this.tileHeight;
 
         return coords;
     }
