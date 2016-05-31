@@ -54,7 +54,7 @@ class Game
             }
         }
         
-        /*let data = new Uint8ClampedArray(4);
+        let data = new Uint8ClampedArray(4);
 
         var deltaTime = this.testLocalTimer.DeltaTime;
 
@@ -168,7 +168,7 @@ class Game
         else
         {
             this.blueOffset = (this.blueOffset-speed);
-        }*/
+        }
     }
 
     SwapBuffers()

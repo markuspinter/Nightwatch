@@ -10,7 +10,7 @@
                 "Id" : 16,
                 "Width" : 4,
                 "Height" : 4,
-                "Source" : "res/asdf.spr"
+                "Source" : "res/fortress.spr"
             },
             "Thief" :
             {

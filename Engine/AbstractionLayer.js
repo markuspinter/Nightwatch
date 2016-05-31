@@ -14,6 +14,7 @@ function gameStep()
         var game = abstractionLayer.game;
 
         abstractionLayer.ClearBuffer();
+        abstractionLayer.putImageData(game.renderer.screenBuffer,0,0,0,0);
         if ($("#render")[0].checked)
         {
             game.UpdateAndRender();

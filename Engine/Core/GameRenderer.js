@@ -58,7 +58,7 @@ class GameRenderer
 
             if (N_typeof(texture) == "Sprite")
             {
-                var img = texture.img;
+                var img = texture.image;
                 var tileId = resManager.GetTileId(texId);
                 var tileCoords = texture.GetTileCoord(tileId);
 
