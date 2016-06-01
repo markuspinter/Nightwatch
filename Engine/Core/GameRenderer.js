@@ -66,9 +66,9 @@ class GameRenderer
                 {
                     this.ctx.drawImage(img, tileCoords.x,
                         tileCoords.y,
-                        texture.tileWidth+tileCoords.x,
-                        texture.tileHeight+tileCoords.y,
-                        x*SCALE, y*SCALE,
+                        texture.tileWidth,
+                        texture.tileHeight,
+                        x*texture.tileWidth*SCALE, y*texture.tileWidth*SCALE,
                         texture.tileWidth*SCALE,
                         texture.tileHeight*SCALE);
                 }
