@@ -73,14 +73,14 @@ class ResourceManager
 
                     img.onload = function ()
                     {
-                        if (elem.Source.match(/\w*.anm/i) || elem.Source.match(/\w*.spr/i))
+                        if (elem.Source.match(/\w*.anm/i))
                         {
                             //NOTE: maybe loading failed because let var img got destroyed
-                            _this.textures[id] = new Sprite(img, elem.Width, elem.Height);
-                            for (var i = 1; i < (elem.Width * elem.Height); i++)
-                            {
-                                _this.textures[id+i] = i;
-                            }
+                            _this.InsertSprite(_this, elem, SpriteType.Animation);
+                        }
+                        else if (elem.Source.match(/\w*.spr/i))
+                        {
+                            _this.InsertSprite(_this, elem, SpriteType.Level);
                         }
                         else
                         {
@@ -99,6 +99,15 @@ class ResourceManager
             }
         }
         GameDebug.LogObject(_this.textures);
+    }
+
+    InsertSprite(_this, elem, spriteType)
+    {
+        _this.textures[id] = new Sprite(img, elem.Width, elem.Height);
+        for (var i = 1; i < (elem.Width * elem.Height); i++)
+        {
+            _this.textures[id+i] = i;
+        }
     }
 }
 

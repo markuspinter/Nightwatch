@@ -4,12 +4,19 @@
 
 class GameRenderer
 {
-    constructor(ctx, gameBuffers)
+    constructor(gameBuffers, gameScreen)
     {
+        this.screen = gameScreen;
+
+        this.levelOffset = new Vec2();
+        this.levelWidth = 0;
+        this.levelHeight = 0;
+
         this.gameBuffers = gameBuffers;
         this.drawBuffer = gameBuffers[0];
         this.screenBuffer = gameBuffers[0];
-        this.ctx = ctx;
+        this.ctx = this.CreateRenderContext();
+
         this.drawBufferIndex = 0;
     }
 
@@ -44,6 +51,32 @@ class GameRenderer
         {
             GameDebug.LogError(this, "Can't render data of type: " + N_typeof(data));
         }
+    }
+
+    CreateRenderContext()
+    {
+        var width = this.screen.Width;
+        var height = this.screen.Height;
+
+        this.levelWidth = width;
+        this.levelHeight = height;
+
+        if (width >= height)
+        {
+            this.levelWidth = height;
+            this.levelOffset.x = Math.trunc((width - this.levelWidth) / 2);
+        }
+        else
+        {
+            this.levelHeight = width;
+            this.levelOffset.y = Math.trunc((height - this.levelHeight) / 2);
+
+        }
+
+        var canvas = document.createElement('canvas');
+        canvas.width = this.levelWidth;
+        canvas.height = this.levelHeight;
+        return canvas.getContext('2d');
     }
 
     RenderGameObject(resManager, gameObj)
@@ -110,7 +143,6 @@ class GameRenderer
         {
             GameDebug.LogError(this, "Parameter must be of type GameObject");
         }
-
     }
 
     RenderColor(xOffset, yOffset, width, height, data)
@@ -151,6 +183,17 @@ class GameRenderer
         //GameDebug.EndTimer("buffer fill");
     }
 
+    GetScreenBuffer()
+    {
+        return this.screenBuffer.Info;
+    }
+
+    MergeBuffers()
+    {
+        var imageData = this.ctx.getImageData(0,0,this.levelWidth,this.levelHeight);
+        this.RenderRegion(this.levelOffset.x,this.levelOffset.y,imageData.width,imageData.height, imageData.data);
+    }
+
     SwapBuffers()
     {
         if (this.drawBufferIndex >= this.gameBuffers.length-1)
@@ -171,5 +214,7 @@ class GameRenderer
 
         this.drawBuffer = gameBuffers[0];
         this.screenBuffer = gameBuffers[0];
+
+        this.ctx = this.CreateRenderContext();
     }
 }

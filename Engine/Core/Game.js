@@ -4,11 +4,9 @@
 
 class Game
 {
-    constructor(ctx, gameBuffers, gameScreen)
+    constructor(gameBuffers, gameScreen)
     {
-        this.screen = gameScreen;
-
-        this.renderer = new GameRenderer(ctx, gameBuffers);
+        this.renderer = new GameRenderer(gameBuffers, gameScreen);
         this.globalTimer = new Timer(GAMESPEED);
         this.testLocalTimer = new LocalTimer(this.globalTimer, 1);
 
@@ -18,7 +16,7 @@ class Game
         this.blueAscending = false;
         this.netManager = new NetworkManager();
         this.lvlManager = new LevelManager();
-        //this.netManager.Connect("PraiseIt", "Sun", ["N_Park"], ["Thief", "Guard"], this);
+        //this.netManager.Connect("PraiseIt", "Sun", ["N_Fortress"], ["Thief", "Guard"], this);
 
 
         this.redOffset = 0;
@@ -40,7 +38,7 @@ class Game
     {
         _this.lvlManager.OnUpdateGameInfo(_this.lvlManager, updateInfo);
     }
-    
+
     UpdateAndRender()
     {
         var lvlObjects = this.lvlManager.LevelObjects;
@@ -64,7 +62,7 @@ class Game
         data[3] = 255;
 
         this.renderer.RenderColor(0,0,
-           this.screen.Width, this.screen.Height, data);
+           this.renderer.screen.Width, this.renderer.screen.Height, data);
         //this.renderer.RenderColor(200, 200,
          //   600, 400, data);
 
@@ -169,6 +167,7 @@ class Game
         {
             this.blueOffset = (this.blueOffset-speed);
         }
+        this.renderer.MergeBuffers();
     }
 
     SwapBuffers()
@@ -183,13 +182,13 @@ class Game
 
     GetScreenBuffer()
     {
-        return this.renderer.screenBuffer.Info;
+        return this.renderer.GetScreenBuffer();
     }
 
     Resize(gameBuffers, newWidth, newHeight)
     {
-        this.screen.Width = newWidth;
-        this.screen.Height = newHeight;
+        this.renderer.screen.Width = newWidth;
+        this.renderer.screen.Height = newHeight;
 
         this.renderer.Resize(gameBuffers);
     }

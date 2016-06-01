@@ -13,13 +13,13 @@ function gameStep()
 
         var game = abstractionLayer.game;
 
-        abstractionLayer.ClearBuffer();
-        //abstractionLayer.putImageData(game.renderer.screenBuffer,0,0,0,0);
+
         if ($("#render")[0].checked)
         {
+            abstractionLayer.ClearBuffer();
             game.UpdateAndRender();
             game.SwapBuffers();
-
+            abstractionLayer.ctx.putImageData(abstractionLayer.game.GetScreenBuffer(), 0, 0);
         }
 
 
@@ -87,7 +87,7 @@ class AbstractionLayer
         window.onresize = this.Resize;
         abstractionLayer = this;
 
-        this.game = new Game(ctx, gameBuffers, gameScreen);
+        this.game = new Game(gameBuffers, gameScreen);
             
         //this.drawBuffer = this.gameBuffers[0];
 
@@ -102,7 +102,6 @@ class AbstractionLayer
         this.ctx.webkitImageSmoothingEnabled = false;
         this.ctx.msImageSmoothingEnabled = false;
         this.ctx.imageSmoothingEnabled = false;
-        this.ctx.putImageData(this.game.GetScreenBuffer(), 0, 0);
     }
 
     CreateBufferData(width, height)
