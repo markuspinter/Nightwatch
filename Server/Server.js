@@ -14,13 +14,13 @@ wss.on('connection', function connection(ws) {
         ws.state = 0;
         ws.loaded = false;
 
-        var rdata;
+        this.rdata;
         var connecttimeout;
         ws.on('message', function incoming(message) {
             var data = JSON.parse(message);
 
             if (ws.state == 0 && data.N_Request) {
-                rdata = data;
+                this.rdata = data;
 
                 ws.send(JSON.stringify({
                     N_Response: {}
@@ -39,22 +39,22 @@ wss.on('connection', function connection(ws) {
                     if(!con)
                     {
 
-                        if (match[m].N_Request.Codename == rdata.N_Request.Codename && match[m].N_Request.Password == rdata.N_Request.Password) {
+                        if (match[m].N_Request.Codename == this.rdata.N_Request.Codename && match[m].N_Request.Password == this.rdata.N_Request.Password) {
                             //Best Hardcode EU
-                            for (i in rdata.N_Request.Levels) {
+                            for (i in this.rdata.N_Request.Levels) {
                                 for (j in match[m].N_Request.Levels) {
-                                    if (rdata.N_Request.Levels[i] == match[m].N_Request.Levels[j]) {
-                                        level = rdata.N_Request.Levels[i];
+                                    if (this.rdata.N_Request.Levels[i] == match[m].N_Request.Levels[j]) {
+                                        level = this.rdata.N_Request.Levels[i];
                                         con = true;
                                     }
                                 }
                             }
                             if (con) {
                                 con = false;
-                                for (i in rdata.N_Request.Roles) {
+                                for (i in this.rdata.N_Request.Roles) {
                                     for (j in match[m].N_Request.Roles) {
-                                        if (rdata.N_Request.Roles[i] != match[m].N_Request.Roles[j]) {
-                                            yourrole = rdata.N_Request.Roles[i];
+                                        if (this.rdata.N_Request.Roles[i] != match[m].N_Request.Roles[j]) {
+                                            yourrole = this.rdata.N_Request.Roles[i];
                                             otherrole = match[m].N_Request.Roles[j];
                                             con = true;
                                         }
@@ -66,7 +66,7 @@ wss.on('connection', function connection(ws) {
                     }
                 }
                 if (!con) {
-                    match[ws.id] = rdata;
+                    match[ws.id] = this.rdata;
                     setTimeout(function () {
                         if (ws.state == 0) {
                             ws.send(JSON.stringify({
