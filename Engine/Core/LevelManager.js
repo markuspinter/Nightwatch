@@ -91,7 +91,7 @@ class LevelManager
                 _this.AddGameObject(_this, currGameObj);
             }
         }
-
+        LEVELLOADDONE = true;
         _this.OnLevelLoadDone(true);
     }
 

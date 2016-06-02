@@ -14,22 +14,22 @@
             },
             "Thief" :
             {
-                "Id" : 12,
+                "Id" : 1,
                 "Width" : 4,
                 "Height" : 4,
-                "Source" : "res/thief.anm"
+                "Source" : "res/Thief.png"
             },
             "Guard" :
             {
-                "Id" : 13,
+                "Id" : 2,
                 "Width" : 4,
                 "Height" : 4,
-                "Source" : "res/guard.anm"
+                "Source" : "res/Guard.png"
             },
-            "Mona Lisa" :
+            "Crown" :
             {
                 "Id" : 200,
-                "Source" : "res/monalisa.png"
+                "Source" : "res/crown.png"
             }
         }
     }
