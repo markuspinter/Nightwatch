@@ -8,4 +8,5 @@ var DEBUG       = true;
 var RESOURCEFILE = "Res/Nightwatch.rdf";
 var VOIDTEXTURE = "Res/Void.png";
 var MAXTEXTURES = 256;
+var LEVELLOADDONE = false;
 var SCALE = 4;
