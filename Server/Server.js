@@ -29,81 +29,85 @@ wss.on('connection', function connection(ws) {
                 connecttimeout = setTimeout(function () { ws.terminate() }, 10000);
             }else if (ws.state == 0 && data.N_Acknowledgement) {
                 clearTimeout(connecttimeout);
-                var level;
-                var yourrole;
-                var otherrole;
-                var comrade;
-                var con = false;
-                //console.log('Starting Matchmaking for %d with the message %s', ws.id, data.N_Request.Codename);
-                for (m in match) {
-                    if(!con)
-                    {
+				if(data.N_Acknowledgement.Connection == "Success")
+				{
+					var level;
+					var yourrole;
+					var otherrole;
+					var comrade;
+					var con = false;
+					//console.log('Starting Matchmaking for %d with the message %s', ws.id, data.N_Request.Codename);
+					for (m in match) {
+						if(!con)
+						{
 
-                        if (match[m].N_Request.Codename == this.rdata.N_Request.Codename && match[m].N_Request.Password == this.rdata.N_Request.Password) {
-                            //Best Hardcode EU
-                            for (i in this.rdata.N_Request.Levels) {
-                                for (j in match[m].N_Request.Levels) {
-                                    if (this.rdata.N_Request.Levels[i] == match[m].N_Request.Levels[j]) {
-                                        level = this.rdata.N_Request.Levels[i];
-                                        con = true;
-                                    }
-                                }
-                            }
-                            if (con) {
-                                con = false;
-                                for (i in this.rdata.N_Request.Roles) {
-                                    for (j in match[m].N_Request.Roles) {
-                                        if (this.rdata.N_Request.Roles[i] != match[m].N_Request.Roles[j]) {
-                                            yourrole = this.rdata.N_Request.Roles[i];
-                                            otherrole = match[m].N_Request.Roles[j];
-                                            con = true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        comrade = m;
-                    }
-                }
-                if (!con) {
-                    match[ws.id] = this.rdata;
-                    setTimeout(function () {
-                        if (ws.state == 0) {
-                            ws.send(JSON.stringify({
-                                N_Error: {
-                                    Code: 134,
-                                    Message: "Timeout: No matching player has been found."
-                                }
-                            }));
-                            delete match[ws.id];
-                        }
-                    },20000);
-                } else {
-                    partners[id] = m;
-                    partners[m] = id;
-                    ws.state = 1;
-                    delete match[comrade];
-                    all_active_connections[comrade].state = 1;
-                    all_active_connections[comrade].send(JSON.stringify(
-                {
-                    N_Setup:
-                    {
-                        Level: level,
-                        Role: otherrole
-                    }
-                }));
+							if (match[m].N_Request.Codename == this.rdata.N_Request.Codename && match[m].N_Request.Password == this.rdata.N_Request.Password) {
+							//Best Hardcode EU
+								for (i in this.rdata.N_Request.Levels) {
+									for (j in match[m].N_Request.Levels) {
+										if (this.rdata.N_Request.Levels[i] == match[m].N_Request.Levels[j]) {
+											level = this.rdata.N_Request.Levels[i];
+											con = true;
+										}
+									}
+								}
+								if (con) {
+									con = false;
+									for (i in this.rdata.N_Request.Roles) {
+										for (j in match[m].N_Request.Roles) {
+											if (this.rdata.N_Request.Roles[i] != match[m].N_Request.Roles[j]) {
+												yourrole = this.rdata.N_Request.Roles[i];
+												otherrole = match[m].N_Request.Roles[j];
+												con = true;
+											}
+										}
+									}
+								}
+							}
+							comrade = m;
+						}
+					}
+					if (!con) {
+						match[ws.id] = this.rdata;
+						setTimeout(function () {
+							if (ws.state == 0) {
+								ws.send(JSON.stringify({
+									N_Error: {
+										Code: 134,
+										Message: "Timeout: No matching player has been found."
+									}
+								}));
+								delete match[ws.id];
+							}
+						},20000);
+					} else {
+						partners[id] = m;
+						partners[m] = id;
+						ws.state = 1;
+						delete match[comrade];
+						all_active_connections[comrade].state = 1;
+						all_active_connections[comrade].send(JSON.stringify(
+					{
+						N_Setup:
+						{
+							Level: level,
+							Role: otherrole
+						}
+					}));
 
-                    ws.send(JSON.stringify(
-                {
-                    N_Setup:
-                    {
-                        Level: level,
-                        Role: yourrole
-                    }
-                }));
-                    console.log("Worked, I guess...");
-                }
-                
+						ws.send(JSON.stringify(
+					{
+						N_Setup:
+						{
+							Level: level,
+							Role: yourrole
+						}
+					}));
+						console.log("Worked, I guess...");
+					}
+				}else{
+					ws.terminate();
+				}
             } else if (ws.state == 1 && data.N_LevelLoad) {
                 console.log("Starting Level loading.");
                 if (data.N_LevelLoad == 'Success') {
