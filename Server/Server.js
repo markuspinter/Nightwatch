@@ -36,7 +36,7 @@ wss.on('connection', function connection(ws) {
 					var otherrole;
 					var comrade;
 					var con = false;
-					//console.log('Starting Matchmaking for %d with the message %s', ws.id, data.N_Request.Codename);
+					console.log('Starting Matchmaking for %d with the message %s', ws.id, this.rdata.N_Request.Codename);
 					for (m in match) {
 						if(!con)
 						{
