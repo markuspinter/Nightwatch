@@ -103,7 +103,7 @@ wss.on('connection', function connection(ws) {
 							Role: yourrole
 						}
 					}));
-						console.log("Worked, I guess...");
+						console.log("Match found.");
 					}
 				}else{
 					ws.terminate();
