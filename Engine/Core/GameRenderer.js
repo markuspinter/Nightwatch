@@ -4,7 +4,7 @@
 
 class GameRenderer
 {
-    constructor(gameBuffers, gameScreen)
+    constructor(ctx, gameBuffers, gameScreen)
     {
         this.screen = gameScreen;
 
@@ -15,7 +15,9 @@ class GameRenderer
         this.gameBuffers = gameBuffers;
         this.drawBuffer = gameBuffers[0];
         this.screenBuffer = gameBuffers[0];
-        this.ctx = this.CreateRenderContext();
+
+        this.screenCtx = ctx;
+        this.levelCtx = this.CreateRenderContext();
 
         this.drawBufferIndex = 0;
     }
@@ -65,12 +67,13 @@ class GameRenderer
         {
             this.levelWidth = height;
             this.levelOffset.x = Math.trunc((width - this.levelWidth) / 2);
+            SCALE = this.levelWidth / (15*16);
         }
         else
         {
             this.levelHeight = width;
             this.levelOffset.y = Math.trunc((height - this.levelHeight) / 2);
-
+            SCALE = this.levelHeight / (15*16);
         }
 
         var canvas = document.createElement('canvas');
@@ -97,7 +100,7 @@ class GameRenderer
 
                 if (gameObj.isStatic)
                 {
-                    this.ctx.drawImage(img, tileCoords.x,
+                    this.levelCtx.drawImage(img, tileCoords.x,
                         tileCoords.y,
                         texture.tileWidth,
                         texture.tileHeight,
@@ -107,7 +110,7 @@ class GameRenderer
                 }
                 else
                 {
-                    this.ctx.drawImage(img, tileCoords.x,
+                    this.levelCtx.drawImage(img, tileCoords.x,
                         tileCoords.y,
                         texture.tileWidth,
                         texture.tileHeight,
@@ -121,12 +124,12 @@ class GameRenderer
             {
                 if (gameObj.isStatic)
                 {
-                    this.ctx.drawImage(texture, x*texture.width*SCALE, y*texture.width*SCALE,
+                    this.levelCtx.drawImage(texture, x*texture.width*SCALE, y*texture.width*SCALE,
                         texture.width*SCALE, texture.height*SCALE);
                 }
                 else
                 {
-                    this.ctx.drawImage(texture, x*SCALE, y*SCALE,
+                    this.levelCtx.drawImage(texture, x*SCALE, y*SCALE,
                                         texture.width*SCALE, texture.height*SCALE);
                 }
 
@@ -190,8 +193,16 @@ class GameRenderer
 
     MergeBuffers()
     {
-        var imageData = this.ctx.getImageData(0,0,this.levelWidth,this.levelHeight);
-        this.RenderRegion(this.levelOffset.x,this.levelOffset.y,imageData.width,imageData.height, imageData.data);
+        this.levelCtx.mozImageSmoothingEnabled = false;
+        this.levelCtx.webkitImageSmoothingEnabled = false;
+        this.levelCtx.msImageSmoothingEnabled = false;
+        this.levelCtx.imageSmoothingEnabled = false;
+
+        var imageData = this.levelCtx.getImageData(0,0,this.levelWidth,this.levelHeight);
+        this.screenCtx.putImageData(this.GetScreenBuffer(), 0, 0);
+        this.screenCtx.putImageData(imageData, this.levelOffset.x,this.levelOffset.y);
+
+
     }
 
     SwapBuffers()

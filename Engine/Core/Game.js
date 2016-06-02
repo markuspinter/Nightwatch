@@ -4,9 +4,9 @@
 
 class Game
 {
-    constructor(gameBuffers, gameScreen)
+    constructor(ctx, gameBuffers, gameScreen)
     {
-        this.renderer = new GameRenderer(gameBuffers, gameScreen);
+        this.renderer = new GameRenderer(ctx, gameBuffers, gameScreen);
         this.globalTimer = new Timer(GAMESPEED);
         this.testLocalTimer = new LocalTimer(this.globalTimer, 1);
 
@@ -56,10 +56,20 @@ class Game
 
         var deltaTime = this.testLocalTimer.DeltaTime;
 
-        data[0] = this.redOffset %= 255;
-        data[1] = this.greenOffset %= 255;
-        data[2] = this.blueOffset %= 255;
-        data[3] = 255;
+        if ($("#renderBufferDemo")[0].checked)
+        {
+            data[0] = this.redOffset %= 255;
+            data[1] = this.greenOffset %= 255;
+            data[2] = this.blueOffset %= 255;
+            data[3] = 255;
+        }
+        else
+        {
+            data[0] = 0;
+            data[1] = 0;
+            data[2] = 0;
+            data[3] = 255;
+        }
 
         this.renderer.RenderColor(0,0,
            this.renderer.screen.Width, this.renderer.screen.Height, data);
@@ -69,104 +79,108 @@ class Game
         //this.renderer.RenderColor(1200, 400,
         //    600, 400, data);
 
-        var speed = 300*deltaTime;
-
-        if (this.redOffset >= 249)
+        if ($("#renderBufferDemo")[0].checked)
         {
-            if (speed < 0)
+            var speed = 300*deltaTime;
+
+            if (this.redOffset >= 249)
             {
-                this.redAscending = true;
+                if (speed < 0)
+                {
+                    this.redAscending = true;
+                }
+                else
+                {
+                    this.redAscending = false;
+                }
+
+            }
+            else if (this.redOffset <= 5)
+            {
+                if (speed < 0)
+                {
+                    this.redAscending = false;
+                }
+                else
+                {
+                    this.redAscending = true;
+                }
+            }
+
+            if (this.redAscending)
+            {
+                this.redOffset = (this.redOffset+speed);
             }
             else
             {
-                this.redAscending = false;
+                this.redOffset = (this.redOffset-speed);
             }
 
-        }
-        else if (this.redOffset <= 5)
-        {
-            if (speed < 0)
+            if (this.greenOffset >= 249)
             {
-                this.redAscending = false;
+                if (speed < 0)
+                {
+                    this.greenAscending = true;
+                }
+                else
+                {
+                    this.greenAscending = false;
+                }
+            }
+            else if (this.greenOffset <= 5)
+            {
+                if (speed < 0)
+                {
+                    this.greenAscending = false;
+                }
+                else
+                {
+                    this.greenAscending = true;
+                }
+            }
+
+            if (this.greenAscending)
+            {
+                this.greenOffset = (this.greenOffset+speed);
             }
             else
             {
-                this.redAscending = true;
+                this.greenOffset = (this.greenOffset-speed);
             }
-        }
 
-        if (this.redAscending)
-        {
-            this.redOffset = (this.redOffset+speed);
-        }
-        else
-        {
-            this.redOffset = (this.redOffset-speed);
-        }
-
-        if (this.greenOffset >= 249)
-        {
-            if (speed < 0)
+            if (this.blueOffset >= 249)
             {
-                this.greenAscending = true;
+                if (speed < 0)
+                {
+                    this.blueAscending = true;
+                }
+                else
+                {
+                    this.blueAscending = false;
+                }
+            }
+            else if (this.blueOffset <= 5)
+            {
+                if (speed < 0)
+                {
+                    this.blueAscending = false;
+                }
+                else
+                {
+                    this.blueAscending = true;
+                }
+            }
+
+            if (this.blueAscending)
+            {
+                this.blueOffset = (this.blueOffset+speed);
             }
             else
             {
-                this.greenAscending = false;
-            }
-        }
-        else if (this.greenOffset <= 5)
-        {
-            if (speed < 0)
-            {
-                this.greenAscending = false;
-            }
-            else
-            {
-                this.greenAscending = true;
+                this.blueOffset = (this.blueOffset-speed);
             }
         }
 
-        if (this.greenAscending)
-        {
-            this.greenOffset = (this.greenOffset+speed);
-        }
-        else
-        {
-            this.greenOffset = (this.greenOffset-speed);
-        }
-
-        if (this.blueOffset >= 249)
-        {
-            if (speed < 0)
-            {
-                this.blueAscending = true;
-            }
-            else
-            {
-                this.blueAscending = false;
-            }
-        }
-        else if (this.blueOffset <= 5)
-        {
-            if (speed < 0)
-            {
-                this.blueAscending = false;
-            }
-            else
-            {
-                this.blueAscending = true;
-            }
-        }
-
-        if (this.blueAscending)
-        {
-            this.blueOffset = (this.blueOffset+speed);
-        }
-        else
-        {
-            this.blueOffset = (this.blueOffset-speed);
-        }
         this.renderer.MergeBuffers();
     }
 

@@ -21,7 +21,7 @@ class LevelManager
         this.lvlObjects = {};
 
         //TEST
-        this.OnLevelLoad(this, "N_Park", "Thief");
+        this.OnLevelLoad(this, "N_Fortress", "Thief");
     }
 
     get LevelObjects()

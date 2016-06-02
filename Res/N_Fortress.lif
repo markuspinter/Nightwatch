@@ -9,7 +9,7 @@
             "Static" :
             [
                 {
-		    "Id" : 16,
+		            "Id" : 16,
                     "X" : 0,
                     "Y" : 0,
                     "Layer" : 1,
@@ -33,70 +33,70 @@
                 },
                 
                 {
-		    "Id" : 16,
+		            "Id" : 16,
                     "X" : 3,
                     "Y" : 0,
                     "Layer" : 1,
                     "Solid" : true
                 },
-		{
-		    "Id" : 17,
+		        {
+		            "Id" : 17,
                     "X" : 4,
                     "Y" : 0,
                     "Layer" : 1,
                     "Solid" : true
                 },
-		{
-		    "Id" : 16,
+		        {
+		            "Id" : 16,
                     "X" : 5,
                     "Y" : 0,
                     "Layer" : 1,
                     "Solid" : true
                 },
-		{
-		    "Id" : 17,
+		        {
+		            "Id" : 17,
                     "X" : 6,
                     "Y" : 0,
                     "Layer" : 1,
                     "Solid" : true
                 },
-		{
-		    "Id" : 16,
+		        {
+		            "Id" : 16,
                     "X" : 7,
                     "Y" : 0,
                     "Layer" : 1,
                     "Solid" : true
                 },
-		{
-		    "Id" : 16,
+		        {
+		            "Id" : 16,
                     "X" : 8,
                     "Y" : 0,
                     "Layer" : 1,
                     "Solid" : true
                 },
-		{
-		    "Id" : 17,
+		        {
+		            "Id" : 17,
                     "X" : 9,
                     "Y" : 0,
                     "Layer" : 1,
                     "Solid" : true
                 },
-		{
-		    "Id" : 17,
+		        {
+		            "Id" : 17,
                     "X" : 10,
                     "Y" : 0,
                     "Layer" : 1,
                     "Solid" : true
                 },
-		{
-		    "Id" : 16,
+		        {
+		            "Id" : 16,
                     "X" : 11,
                     "Y" : 0,
                     "Layer" : 1,
                     "Solid" : true
                 },
-		{
-		    "Id" : 17,
+		        {
+		            "Id" : 17,
                     "X" : 12,
                     "Y" : 0,
                     "Layer" : 1,

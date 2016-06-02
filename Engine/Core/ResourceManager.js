@@ -76,11 +76,11 @@ class ResourceManager
                         if (elem.Source.match(/\w*.anm/i))
                         {
                             //NOTE: maybe loading failed because let var img got destroyed
-                            _this.InsertSprite(_this, elem, SpriteType.Animation);
+                            _this.InsertSprite(_this, id, elem, img, SpriteType.Animation);
                         }
                         else if (elem.Source.match(/\w*.spr/i))
                         {
-                            _this.InsertSprite(_this, elem, SpriteType.Level);
+                            _this.InsertSprite(_this, id, elem, img, SpriteType.Level);
                         }
                         else
                         {
@@ -101,12 +101,12 @@ class ResourceManager
         GameDebug.LogObject(_this.textures);
     }
 
-    InsertSprite(_this, elem, spriteType)
+    InsertSprite(_this, elemId, elem, img, spriteType)
     {
-        _this.textures[id] = new Sprite(img, elem.Width, elem.Height);
+        _this.textures[elemId] = new Sprite(img, elem.Width, elem.Height, spriteType);
         for (var i = 1; i < (elem.Width * elem.Height); i++)
         {
-            _this.textures[id+i] = i;
+            _this.textures[elemId+i] = i;
         }
     }
 }

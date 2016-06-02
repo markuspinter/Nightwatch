@@ -14,7 +14,15 @@ class Sprite
     //width: number of tiles in width, number of tiles in height
     constructor(img, width, height, spriteType)
     {
-        this.type = SpriteType.Undefined;
+        if (spriteType === undefined)
+        {
+            this.type = SpriteType.Undefined;
+        }
+        else
+        {
+            this.type = spriteType;
+        }
+
         this.image = img;
         this.width = width;
         this.height = height;
