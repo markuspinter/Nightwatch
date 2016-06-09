@@ -16,7 +16,7 @@ class Game
         this.blueAscending = false;
         this.netManager = new NetworkManager();
         this.lvlManager = new LevelManager();
-        this.netManager.Connect("PraiseIt", "Sun", ["N_Fortress"], ["Thief", "Guard"], this);
+        //this.netManager.Connect("PraiseIt", "Sun", ["N_Fortress"], ["Thief", "Guard"], this);
 
 
         this.redOffset = 0;
@@ -45,7 +45,7 @@ class Game
         var layers = Object.keys(lvlObjects).sort();
         for (var layer in layers)
         {
-            var layerObj = lvlObjects[layer];
+            var layerObj = lvlObjects[layers[layer]];
             for (var gameObj in layerObj)
             {
                 this.renderer.RenderGameObject(this.lvlManager.resManager, layerObj[gameObj]);

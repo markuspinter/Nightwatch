@@ -193,13 +193,14 @@ class GameRenderer
 
     MergeBuffers()
     {
+        let imageData;
         if (LEVELLOADDONE) {
             this.levelCtx.mozImageSmoothingEnabled = false;
             this.levelCtx.webkitImageSmoothingEnabled = false;
             this.levelCtx.msImageSmoothingEnabled = false;
             this.levelCtx.imageSmoothingEnabled = false;
 
-            var imageData = this.levelCtx.getImageData(0, 0, this.levelWidth, this.levelHeight);
+            imageData = this.levelCtx.getImageData(0, 0, this.levelWidth, this.levelHeight);
         }
             this.screenCtx.putImageData(this.GetScreenBuffer(), 0, 0);
         if (LEVELLOADDONE)
