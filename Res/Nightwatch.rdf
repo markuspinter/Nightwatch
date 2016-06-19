@@ -1,0 +1,36 @@
+{
+    "N_Resources" :
+    {
+        "Version" : 1.0,
+
+        "Data" :
+        {
+            "Fortress" :
+            {
+                "Id" : 16,
+                "Width" : 4,
+                "Height" : 4,
+                "Source" : "res/fortress.spr"
+            },
+            "Thief" :
+            {
+                "Id" : 1,
+                "Width" : 4,
+                "Height" : 4,
+                "Source" : "res/Thief.png"
+            },
+            "Guard" :
+            {
+                "Id" : 2,
+                "Width" : 4,
+                "Height" : 4,
+                "Source" : "res/Guard.png"
+            },
+            "Crown" :
+            {
+                "Id" : 200,
+                "Source" : "res/crown.png"
+            }
+        }
+    }
+}

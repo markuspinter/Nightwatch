@@ -4,7 +4,7 @@
 
 var abstractionLayer;
 var lastMilliseconds = new Date();
-var buffersUsed = 2;
+
 function gameStep()
 {
     if (abstractionLayer.game.running)
@@ -13,13 +13,15 @@ function gameStep()
 
         var game = abstractionLayer.game;
 
+
         if ($("#render")[0].checked)
         {
             game.UpdateAndRender();
             game.SwapBuffers();
-
+            //abstractionLayer.ctx.putImageData(abstractionLayer.game.GetScreenBuffer(), 0, 0);
         }
-        abstractionLayer.ctx.putImageData(game.GetScreenBuffer(), 0, 0);
+
+
         //--- Test ---
 
         let currentMilliseconds = new Date();
@@ -27,13 +29,18 @@ function gameStep()
         let fps = 1000/deltaTime;
         lastMilliseconds = currentMilliseconds;
 
-        abstractionLayer.ctx.font = "18px sans-serif";
-        abstractionLayer.ctx.fillStyle = "white";
-        abstractionLayer.ctx.fillText("Elapsed: " + deltaTime.toFixed(2) + "ms",
-            100, 100);
-        abstractionLayer.ctx.fillText("FPS:     " + fps.toFixed(0),
-            100, 130);
+        game.globalTimer.Step(deltaTime.toFixed(3)/1000);
+        game.testLocalTimer.Step();
 
+        if ($("#render")[0].checked)
+        {
+            abstractionLayer.ctx.font = "18px sans-serif";
+            abstractionLayer.ctx.fillStyle = "white";
+            abstractionLayer.ctx.fillText("Elapsed: " + deltaTime.toFixed(2) + "ms",
+                100, 100);
+            abstractionLayer.ctx.fillText("FPS:     " + fps.toFixed(0),
+                100, 130);
+        }
         //console.clear();
         //GameDebug.LogInfo(this, "Elapsed: " +
         //   deltaTime + "\n\tFps: " + fps.toFixed(0));
@@ -61,7 +68,7 @@ class AbstractionLayer
 
         var gameScreen = new GameScreen(canvas.width, canvas.height);
 
-        var gameBuffers = new Array(buffersUsed);
+        var gameBuffers = new Array(BUFFERING);
 
         var bufferData = this.CreateBufferData(gameScreen.Width, gameScreen.Height);
 
@@ -75,15 +82,17 @@ class AbstractionLayer
                 gameScreen.Width,
                 gameScreen.Height);
         }
-        this.game = new Game(gameBuffers, gameScreen);
+
+        window.onbeforeunload = this.CloseRequested;
+        window.onresize = this.Resize;
+        abstractionLayer = this;
+
+        this.game = new Game(ctx, gameBuffers, gameScreen);
             
         //this.drawBuffer = this.gameBuffers[0];
 
         //this.DrawBufferTest();
 
-        abstractionLayer = this;
-        window.onbeforeunload = abstractionLayer.CloseRequested;
-        window.onresize = abstractionLayer.Resize;
         gameStep();
     }
 
@@ -100,6 +109,23 @@ class AbstractionLayer
         return buffer;
     }
 
+    ReadJson(caller, filePath, callback)
+    {
+        try
+        {
+            $.getJSON(filePath, function (data) {
+                callback(caller, data);
+            }).fail(function( jqxhr, textStatus, error ) {
+                var err = textStatus + ", " + error;
+                console.log( "Request Failed: " + err )});
+
+        }
+        catch (e)
+        {
+            GameDebug.LogError(this, e.message);
+        }
+    }
+
     CloseRequested()
     {
         abstractionLayer.game.Shutdown();
@@ -113,7 +139,7 @@ class AbstractionLayer
         abstractionLayer.canvas.width = newWidth;
         abstractionLayer.canvas.height = newHeight;
 
-        var gameBuffers = new Array(buffersUsed);
+        var gameBuffers = new Array(BUFFERING);
 
         var bufferData = abstractionLayer.CreateBufferData(
             newWidth,
@@ -126,7 +152,7 @@ class AbstractionLayer
                 newWidth,
                 newHeight);
         }
-        abstractionLayer.game.Resize(gameBuffers, window.innerWidth, window.innerHeight);
+        abstractionLayer.game.Resize(gameBuffers, newWidth, newHeight);
     }
 }
 

@@ -11,9 +11,27 @@
         <div style="position: absolute; top: 160px; left: 100px; color: white; font-size: 18px; font-family: sans-serif;">
             <p style="display: inline;">Render: </p>
             <input id="render" type="checkbox" checked>
+            <br>
+            <p style="display: inline;">Render Buffer Demo: </p>
+            <input id="renderBufferDemo" type="checkbox">
+            <br>
+            <p style="display: inline;">GlobalTime: </p>
+            <input id="globalTime" style="margin-top: 20px"
+                   type="range" min="-2" max="2" value="1" step="0.01"
+                   oninput="abstractionLayer.game.globalTimer.Speed = this.value;
+                   $('#globalVal').text(this.value + 'x');">
+
+            <p id="globalVal" style="display: inline;">1x</p>
+            <br>
+            <p style="display: inline;">LocalTime: </p>
+            <input id="localTime" style="margin-top: 20px"
+                   type="range" min="-2" max="2" value="0.5" step="0.01"
+                   oninput="abstractionLayer.game.testLocalTimer.Speed = this.value;
+                   $('#localVal').text(this.value + 'x');">
+            <p id="localVal" style="display: inline;">0.5x</p>
         </div>
 
-        <canvas id="gameCanvas"></canvas>
+        <canvas id="gameCanvas" style="min-height:300px;"></canvas>
     </div>
 </body>
 </html>

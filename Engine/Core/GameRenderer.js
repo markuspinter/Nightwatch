@@ -4,11 +4,21 @@
 
 class GameRenderer
 {
-    constructor(gameBuffers)
+    constructor(ctx, gameBuffers, gameScreen)
     {
+        this.screen = gameScreen;
+
+        this.levelOffset = new Vec2();
+        this.levelWidth = 0;
+        this.levelHeight = 0;
+
         this.gameBuffers = gameBuffers;
         this.drawBuffer = gameBuffers[0];
         this.screenBuffer = gameBuffers[0];
+
+        this.screenCtx = ctx;
+        this.levelCtx = this.CreateRenderContext();
+
         this.drawBufferIndex = 0;
     }
 
@@ -24,14 +34,14 @@ class GameRenderer
             let absHeight = yOffset+height;
             let bufferWidth = this.drawBuffer.Width*4;
 
-            for (let y = yOffset; y < absHeight ; y++)
+            for (var y = yOffset; y < absHeight ; y++)
             {
-                let row = (y*(bufferWidth));
-                let dataRow = ((y-yOffset)*(width));
-                for (let x = xStart; x < absWidth; x+=4)
+                var row = (y*(bufferWidth));
+                var dataRow = ((y-yOffset)*(width));
+                for (var x = xStart; x < absWidth; x+=4)
                 {
-                    let pixelInDrawBuffer = x+row;
-                    let pixelInData = (x-xStart)+dataRow;
+                    var pixelInDrawBuffer = x+row;
+                    var pixelInData = (x-xStart)+dataRow;
                     buffer[pixelInDrawBuffer] = data[pixelInData];
                     buffer[pixelInDrawBuffer+1] = data[pixelInData+1];
                     buffer[pixelInDrawBuffer+2] = data[pixelInData+2];
@@ -42,6 +52,99 @@ class GameRenderer
         else
         {
             GameDebug.LogError(this, "Can't render data of type: " + N_typeof(data));
+        }
+    }
+
+    CreateRenderContext()
+    {
+        var width = this.screen.Width;
+        var height = this.screen.Height;
+
+        this.levelWidth = width;
+        this.levelHeight = height;
+
+        if (width >= height)
+        {
+            this.levelWidth = height;
+            this.levelOffset.x = Math.trunc((width - this.levelWidth) / 2);
+            SCALE = this.levelWidth / (15*16);
+        }
+        else
+        {
+            this.levelHeight = width;
+            this.levelOffset.y = Math.trunc((height - this.levelHeight) / 2);
+            SCALE = this.levelHeight / (15*16);
+        }
+
+        var canvas = document.createElement('canvas');
+        canvas.width = this.levelWidth;
+        canvas.height = this.levelHeight;
+        return canvas.getContext('2d');
+    }
+
+    RenderGameObject(resManager, gameObj)
+    {
+        if (N_typeof(gameObj) == "GameObject")
+        {
+            var x = gameObj.position.x;
+            var y = gameObj.position.y;
+            var texId = gameObj.textureId;
+
+            var texture = resManager.GetTexture(texId);
+
+            if (N_typeof(texture) == "Sprite")
+            {
+                var img = texture.image;
+                var tileId = resManager.GetTileId(texId);
+                var tileCoords = texture.GetTileCoord(tileId);
+
+                if (gameObj.isStatic)
+                {
+                    this.levelCtx.drawImage(img, tileCoords.x,
+                        tileCoords.y,
+                        texture.tileWidth,
+                        texture.tileHeight,
+                        x*texture.tileWidth*SCALE, y*texture.tileWidth*SCALE,
+                        texture.tileWidth*SCALE,
+                        texture.tileHeight*SCALE);
+                }
+                else
+                {
+                    this.levelCtx.drawImage(img, tileCoords.x,
+                        tileCoords.y,
+                        texture.tileWidth,
+                        texture.tileHeight,
+                        x*SCALE, y*SCALE,
+                        texture.tileWidth*SCALE,
+                        texture.tileHeight*SCALE);
+                }
+
+            }
+            else if (N_typeof(texture) == "HTMLImageElement")
+            {
+                if (gameObj.isStatic)
+                {
+                    this.levelCtx.drawImage(texture, x*texture.width*SCALE, y*texture.width*SCALE,
+                        texture.width*SCALE, texture.height*SCALE);
+                }
+                else
+                {
+                    this.levelCtx.drawImage(texture, x*SCALE, y*SCALE,
+                                        texture.width*SCALE, texture.height*SCALE);
+                }
+
+            }
+            else
+            {
+                GameDebug.LogError(this, "Object to be drawn not supported: " +
+                    N_typeof(texture));
+            }
+
+
+        }
+        else
+        {
+            GameDebug.LogError(this, "Parameter must be of type GameObject");
         }
     }
 
@@ -83,6 +186,32 @@ class GameRenderer
         //GameDebug.EndTimer("buffer fill");
     }
 
+    GetScreenBuffer()
+    {
+        return this.screenBuffer.Info;
+    }
+
+    MergeBuffers()
+    {
+        let imageData;
+        if (LEVELLOADDONE) {
+            this.levelCtx.mozImageSmoothingEnabled = false;
+            this.levelCtx.webkitImageSmoothingEnabled = false;
+            this.levelCtx.msImageSmoothingEnabled = false;
+            this.levelCtx.imageSmoothingEnabled = false;
+
+            imageData = this.levelCtx.getImageData(0, 0, this.levelWidth, this.levelHeight);
+        }
+            this.screenCtx.putImageData(this.GetScreenBuffer(), 0, 0);
+        if (LEVELLOADDONE)
+        {
+            this.screenCtx.putImageData(imageData, this.levelOffset.x,this.levelOffset.y);
+        }
+
+
+
+    }
+
     SwapBuffers()
     {
         if (this.drawBufferIndex >= this.gameBuffers.length-1)
@@ -103,5 +232,7 @@ class GameRenderer
 
         this.drawBuffer = gameBuffers[0];
         this.screenBuffer = gameBuffers[0];
+
+        this.ctx = this.CreateRenderContext();
     }
 }

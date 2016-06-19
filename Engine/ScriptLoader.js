@@ -64,10 +64,17 @@ $(document).ready(function()
 
     }
 
+    LoadScript("Engine/Settings.js", OnLoaded);
     LoadScript("Engine/Debug.js", OnLoaded);
     LoadScript("Engine/Tools.js", OnLoaded);
+    LoadScript("Engine/NetworkLayer.js", OnLoaded);
     LoadScript("Engine/Core/Common.js", OnLoaded);
+    LoadScript("Engine/Core/Sprite.js", OnLoaded);
+    LoadScript("Engine/Core/ResourceManager.js", OnLoaded);
+    LoadScript("Engine/Core/LevelManager.js", OnLoaded);
+    LoadScript("Engine/Core/Timer.js", OnLoaded);
     LoadScript("Engine/Core/Game.js", OnLoaded);
+    LoadScript("Engine/Core/GameObject.js", OnLoaded);
     LoadScript("Engine/Core/GameRenderer.js", OnLoaded);
     LoadScript("Engine/AbstractionLayer.js", function ()
     {

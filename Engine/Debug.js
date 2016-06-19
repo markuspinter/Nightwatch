@@ -2,8 +2,6 @@
  * Created by Markus on 5/14/2016.
  */
 
-var DEBUG = true;
-
 class Debug
 {
     constructor()
@@ -40,6 +38,14 @@ class Debug
         if (DEBUG)
         {
             console.log(N_nameof(caller) + "\n\t" + message);
+        }
+    }
+
+    LogObject(obj)
+    {
+        if (DEBUG)
+        {
+            console.log(obj);
         }
     }
 
