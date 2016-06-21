@@ -113,13 +113,14 @@ wss.on('connection', function connection(ws) {
                 if (data.N_LevelLoad == 'Success') {
                     ws.loaded = true;
                     ws.state = 2;
-                    setTimeout(function () {
+					console.log('Level Loading succeeded.');
+                    /* setTimeout(function () {
                         if (all_active_connections[partners[ws.id]].loaded && ws.state==2) {
                             ws.send(JSON.stringify({
                                N_Force: true 
                             }));
                         }
-                    },30000);
+                    },30000); */
 
                     
                 } else {
@@ -128,13 +129,14 @@ wss.on('connection', function connection(ws) {
                     console.log('Connection has been terminated');
                 }
                 
-            } else if (ws.state == 2 && data.N_Init) {
+            // } else if (ws.state == 2 && data.N_Init) {
+				
+                // all_active_connections[partners[id]].send(JSON.stringify(data));
+                // ws.state = 3;
+                // all_active_connections[partners[id]].state = 3;
 
-                all_active_connections[partners[id]].send(JSON.stringify(data));
-                ws.state = 3;
-                all_active_connections[partners[id]].state = 3;
-
-            } else if (ws.state = 3 && data.N_Update) {
+            } else if (ws.state = 2 && data.N_Update) {
+				console.log('Received update message from ' + ws.id + " to go " data.N_Update.Direction );
                 all_active_connections[partners[id]].send(JSON.stringify(data));
                 if (data.N_Update.Escaped == true || data.N_Update.Caught == true) {
                     ws.state = 0;
