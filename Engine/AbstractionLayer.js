@@ -5,6 +5,9 @@
 var abstractionLayer;
 var lastMilliseconds = new Date();
 
+var directionThief = "NONE";
+var directionGuard = "NONE";
+
 function gameStep()
 {
     if (abstractionLayer.game.running)
@@ -40,6 +43,10 @@ function gameStep()
                 100, 100);
             abstractionLayer.ctx.fillText("FPS:     " + fps.toFixed(0),
                 100, 130);
+            abstractionLayer.ctx.fillText("Thief Direction:     " + directionThief,
+                100, 160);
+            abstractionLayer.ctx.fillText("Guard Direction:     " + directionGuard,
+                100, 190);
         }
         //console.clear();
         //GameDebug.LogInfo(this, "Elapsed: " +
