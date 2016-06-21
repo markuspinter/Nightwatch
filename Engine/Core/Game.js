@@ -38,7 +38,9 @@ class Game
     {
         _this.lvlManager.OnUpdateGameInfo(_this.lvlManager, updateInfo);
     }
-
+    
+    
+    
     UpdateAndRender()
     {
         var lvlObjects = this.lvlManager.LevelObjects;

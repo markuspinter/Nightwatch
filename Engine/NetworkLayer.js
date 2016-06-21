@@ -117,7 +117,7 @@ class NetworkManager
             this.socket.Connect('localhost', 2541);
 
             var _this = this;
-            var isThief = false;
+            this.isThief = false;
 
             game.lvlManager.OnLevelLoadDone = function (success)
             {
@@ -188,16 +188,17 @@ class NetworkManager
 
                             if (message.N_Setup.Role.match(/thief/i))
                             {
-                                isThief = true;
+                                _this.isThief = true;
                             }
 
                             game.OnLevelLoad(game, message.N_Setup.Level,
                                                     message.N_Setup.Role);
+
                         }
                     }
                     else if (_this.connState == NetworkState.LevelLoadDone)
                     {
-                        if (isThief)
+                        /*if (isThief)
                         {
                             if (message.N_Init)
                             {
@@ -207,20 +208,35 @@ class NetworkManager
                             }
                         }
                         else
-                        {
+                        {*/
                             if (message.N_Update)
                             {
                                 _this.connState = NetworkState.Update;
 
                                 game.OnUpdateGameInfo(game, message.N_Update);
+
+
+
                             }
-                        }
+                        //}
                     }
                     else if (_this.connState = NetworkState.Update)
                     {
                         if (message.N_Update)
                         {
                             game.OnUpdateGameInfo(game, message.N_Update);
+
+                            if (message.N_Update.Direction)
+                            {
+                                if (_this.isThief)
+                                {
+                                    directionGuard = message.N_Update.Direction;
+                                }
+                                else
+                                {
+                                    directionThief = message.N_Update.Direction;
+                                }
+                            }
                         }
                     }
                 }
@@ -243,6 +259,8 @@ class NetworkManager
         var N_LevelLoad = {N_LevelLoad : (success) ? "Success" : "Failed"};
 
         _this.socket.Send(JSON.stringify(N_LevelLoad));
+
+        _this.OnUpdateDirection(_this);
     }
 
     OnGuardPositionsVerified(_this, legit)
@@ -261,4 +279,56 @@ class NetworkManager
         _this.socket.Send(JSON.stringify(N_Update));
     }
 
+    OnUpdateDirection(_this)
+    {
+        var rand = Math.floor(Math.random() * 4) + 1;
+
+        if (_this.isThief)
+        {
+            switch (rand)
+            {
+                case 1:
+                    directionThief = "N";
+                    break;
+                case 2:
+                    directionThief = "E";
+                    break;
+                case 3:
+                    directionThief = "S";
+                    break;
+                case 4:
+                    directionThief = "W";
+                    break;
+                default:
+                    directionThief = "NONE";
+            }
+            _this.OnSendUpdate(_this, {Direction: directionThief});
+        }
+        else
+        {
+            switch (rand)
+            {
+                case 1:
+                    directionGuard = "N";
+                    break;
+                case 2:
+                    directionGuard = "E";
+                    break;
+                case 3:
+                    directionGuard = "S";
+                    break;
+                case 4:
+                    directionGuard = "W";
+                    break;
+                default:
+                    directionGuard = "NONE";
+            }
+            _this.OnSendUpdate(_this, {Direction: directionGuard});
+        }
+
+        setTimeout(function()
+        {
+            _this.OnUpdateDirection(_this);
+        }, 1000);
+    }
 }
