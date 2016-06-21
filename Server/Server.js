@@ -26,7 +26,10 @@ wss.on('connection', function connection(ws) {
                     N_Response: {}
                 }));
 
-                connecttimeout = setTimeout(function () { ws.terminate() }, 10000);
+                connecttimeout = setTimeout(function () { 
+				console.log('Connection to client ' + ws.id + ' could not be established.');
+				ws.terminate();
+				}, 10000);
             }else if (ws.state == 0 && data.N_Acknowledgement) {
                 clearTimeout(connecttimeout);
 				if(data.N_Acknowledgement.Connection == "Success")
@@ -77,6 +80,7 @@ wss.on('connection', function connection(ws) {
 										Message: "Timeout: No matching player has been found."
 									}
 								}));
+								console.log('Client ' + ws.id + ' timed out because no match was found.')
 								delete match[ws.id];
 							}
 						},20000);
